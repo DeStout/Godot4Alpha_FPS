@@ -98,7 +98,7 @@ func _input(event) -> void:
 func _shoot() -> void:
 	is_reloading = false
 	reset_recoil = false
-	equipped.shoot()
+	equipped.shoot(self)
 	_update_HUD()
 	
 	equipped.play("Shoot", false)
@@ -243,10 +243,10 @@ func add_ammo(amount : int, ammo_for : int, picked_up : Callable) -> void:
 	_update_HUD()
 
 
-func is_shot(damage : int, shape_id : int, enemy : Enemy) -> void:
+func is_shot(damage : int, shape_id : int, shooter : Enemy) -> void:
 	if $DamageCollision.shape_owner_get_owner(shape_id) == $DamageCollision/HeadCollision:
 		damage *= 1.5
 	health -= damage
 	if health <= 0:
-		container.remove_player(self)
+		container.remove_player(self, shooter)
 	_update_HUD()

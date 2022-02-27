@@ -80,9 +80,10 @@ func remove_enemy(dead_enemy : CharacterBody3D) -> void:
 	enemies.append(enemy)
 
 
-func remove_player(dead_player : CharacterBody3D) -> void:
+func remove_player(dead_player : CharacterBody3D, killer : Enemy) -> void:
 	dead_player.queue_free()
 	player = null
+	killer.camera.current = true
 	
 	for enemy in enemies:
 		enemy.player = null
@@ -93,6 +94,7 @@ func remove_player(dead_player : CharacterBody3D) -> void:
 	
 	player = player_.instantiate()
 	_spawn(player)
+	killer.camera.current = false
 	for enemy in enemies:
 		enemy.player = player
 

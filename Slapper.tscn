@@ -118,4 +118,7 @@ anims/Switch = SubResource( "Animation_xs7cn" )
 [node name="SFX" type="Node" parent="."]
 script = ExtResource( "2_7kghw" )
 
+[node name="SFX3D" type="Node" parent="."]
+script = ExtResource( "2_7kghw" )
+
 [connection signal="timeout" from="CanShoot" to="." method="_can_shoot"]

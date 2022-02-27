@@ -41,6 +41,8 @@ var container : Node3D
 var is_shooting := false
 var is_reloading := false
 
+# Misc
+@onready var camera : Camera3D = $Head/ViewHelper/Camera3D
 var default_color : Color
 var health : int = 100
 
@@ -200,7 +202,7 @@ func player_is_seen() -> void:
 
 func _shoot() -> void:
 	is_reloading = false
-	equipped.shoot()
+	equipped.shoot(self)
 	
 	equipped.play("Shoot", false)
 	

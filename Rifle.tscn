@@ -136,6 +136,15 @@ script = ExtResource( "2_0xrbn" )
 
 [node name="RifleShot1" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource( "3_h1kpo" )
-volume_db = -12.474
+volume_db = -12.0
+
+[node name="SFX3D" type="Node3D" parent="."]
+script = ExtResource( "2_0xrbn" )
+
+[node name="RifleShot2" type="AudioStreamPlayer3D" parent="SFX3D"]
+stream = ExtResource( "3_h1kpo" )
+unit_db = -12.0
+unit_size = 25.0
+max_db = -1.0
 
 [connection signal="timeout" from="CanShoot" to="." method="_can_shoot"]

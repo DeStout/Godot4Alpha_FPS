@@ -31,20 +31,20 @@ albedo_color = Color(1, 0.568627, 0.537255, 1)
 resource_local_to_scene = true
 material = SubResource( "StandardMaterial3D_5u12y" )
 radius = 0.25
-height = 1.2
+height = 1.25
 radial_segments = 16
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3vddd"]
 resource_local_to_scene = true
 radius = 0.251
-height = 1.7
+height = 1.75
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_vrlk2"]
 radius = 0.25
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4e5ow"]
 radius = 0.25
-height = 1.2
+height = 1.25
 
 [node name="Enemy" type="CharacterBody3D"]
 collision_layer = 2
@@ -66,7 +66,7 @@ collide_with_areas = true
 visible = false
 
 [node name="Head" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 mesh = SubResource( "SphereMesh_ua1oe" )
 skeleton = NodePath("../../..")
 
@@ -111,7 +111,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 1.49011e-08, 0, -1.49011e-08, 1, 0, -1.19
 shape = SubResource( "SphereShape3D_ngx6b" )
 
 [node name="Body" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.625, 0)
 mesh = SubResource( "CapsuleMesh_nlv8a" )
 skeleton = NodePath("../../..")
 
@@ -121,7 +121,7 @@ mesh = SubResource( "SphereMesh_r4q6o" )
 skeleton = NodePath("../..")
 
 [node name="CharacterCollision" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
 shape = SubResource( "CapsuleShape3D_3vddd" )
 
 [node name="DamageCollision" type="Area3D" parent="."]
@@ -129,11 +129,11 @@ collision_layer = 4
 collision_mask = 4
 
 [node name="HeadCollision" type="CollisionShape3D" parent="DamageCollision"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 shape = SubResource( "SphereShape3D_vrlk2" )
 
 [node name="BodyCollision" type="CollisionShape3D" parent="DamageCollision"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.625, 0)
 shape = SubResource( "CapsuleShape3D_4e5ow" )
 
 [node name="NavAgent" type="NavigationAgent3D" parent="."]

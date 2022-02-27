@@ -18,19 +18,19 @@ rings = 8
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_nys8q"]
 material = SubResource( "StandardMaterial3D_sew1q" )
 radius = 0.25
-height = 1.2
+height = 1.25
 radial_segments = 16
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tpboj"]
 radius = 0.251
-height = 1.7
+height = 1.75
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_gths8"]
 radius = 0.25
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3if3p"]
 radius = 0.25
-height = 1.2
+height = 1.25
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_5kwlu"]
 radius = 0.30253
@@ -45,19 +45,19 @@ __meta__ = {
 }
 
 [node name="Head" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 layers = 4
 mesh = SubResource( "SphereMesh_qjlay" )
 skeleton = NodePath("../../..")
 
 [node name="Body" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.625, 0)
 layers = 4
 mesh = SubResource( "CapsuleMesh_nys8q" )
 skeleton = NodePath("../../..")
 
 [node name="CharacterCollision" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
 shape = SubResource( "CapsuleShape3D_tpboj" )
 
 [node name="DamageCollision" type="Area3D" parent="."]
@@ -65,15 +65,15 @@ collision_layer = 4
 collision_mask = 4
 
 [node name="HeadCollision" type="CollisionShape3D" parent="DamageCollision"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 shape = SubResource( "SphereShape3D_gths8" )
 
 [node name="BodyCollision" type="CollisionShape3D" parent="DamageCollision"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.625, 0)
 shape = SubResource( "CapsuleShape3D_3if3p" )
 
 [node name="CameraHelper" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.47593, 0)
 
 [node name="Recoil" type="Node3D" parent="CameraHelper"]
 transform = Transform3D(1, 0, 0, 0, 0.988494, -0.151261, 0, 0.151261, 0.988494, 0, 0, 0)

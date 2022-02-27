@@ -11,6 +11,7 @@ class_name Weapon
 @export var base_damage := 10
 
 @onready var sfx := $SFX
+@onready var sfx_3d := $SFX3D
 
 signal slap
 var can_shoot := false
@@ -31,8 +32,12 @@ func play(animation : String, reverse : bool = true) -> void:
 	await $AnimationPlayer.animation_finished
 
 
-func shoot() -> void:
-	var playing = sfx.shoot()
+func shoot(shooter : CharacterBody3D) -> void:
+	var playing
+	if shooter is Enemy:
+		playing = sfx_3d.shoot()
+	else:
+		playing = sfx.shoot()
 	if max_ammo > 0:
 		ammo_in_mag -= 1
 	can_shoot = false
