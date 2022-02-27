@@ -1,0 +1,16 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOGGVorbis"
+uid="uid://ddnxsubfu5btr"
+path="res://.godot/imported/Silenced_01.ogg-5aa4c98928e9466c05516fc6680a9570.oggvorbisstr"
+
+[deps]
+
+source_file="res://Silenced_01.ogg"
+dest_files=["res://.godot/imported/Silenced_01.ogg-5aa4c98928e9466c05516fc6680a9570.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0

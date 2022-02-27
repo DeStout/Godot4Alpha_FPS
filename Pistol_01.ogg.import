@@ -1,0 +1,16 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOGGVorbis"
+uid="uid://dsqs3cgah1s4u"
+path="res://.godot/imported/Pistol_01.ogg-1b1c7eff630033959be641e37b4df421.oggvorbisstr"
+
+[deps]
+
+source_file="res://Pistol_01.ogg"
+dest_files=["res://.godot/imported/Pistol_01.ogg-1b1c7eff630033959be641e37b4df421.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0

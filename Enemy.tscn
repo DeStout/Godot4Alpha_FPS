@@ -1,0 +1,148 @@
+[gd_scene load_steps=13 format=3 uid="uid://2i4n8du2bu57"]
+
+[ext_resource type="Script" path="res://Enemy.gd" id="1_piv5o"]
+[ext_resource type="PackedScene" uid="uid://cy12nf62sv60i" path="res://VectorCube.tscn" id="2_mlfi0"]
+[ext_resource type="PackedScene" uid="uid://dcerb2l2eaj1d" path="res://Slapper.tscn" id="2_w6l2w"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7kyy2"]
+resource_local_to_scene = true
+albedo_color = Color(1, 0.568627, 0.537255, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ua1oe"]
+resource_local_to_scene = true
+material = SubResource( "StandardMaterial3D_7kyy2" )
+radius = 0.25
+height = 0.5
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SphereMesh" id="SphereMesh_r4q6o"]
+radius = 0.05
+height = 0.1
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ngx6b"]
+radius = 0.30253
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5u12y"]
+resource_local_to_scene = true
+albedo_color = Color(1, 0.568627, 0.537255, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_nlv8a"]
+resource_local_to_scene = true
+material = SubResource( "StandardMaterial3D_5u12y" )
+radius = 0.25
+height = 1.2
+radial_segments = 16
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3vddd"]
+resource_local_to_scene = true
+radius = 0.251
+height = 1.7
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_vrlk2"]
+radius = 0.25
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4e5ow"]
+radius = 0.25
+height = 1.2
+
+[node name="Enemy" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource( "1_piv5o" )
+__meta__ = {
+"_edit_horizontal_guides_": [450.0, 900.0, 540.0],
+"_edit_vertical_guides_": [768.0]
+}
+
+[node name="PlayerSeen" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
+visible = false
+target_position = Vector3(0, 0, -1)
+collision_mask = 5
+collide_with_areas = true
+
+[node name="VectorCube" parent="PlayerSeen" instance=ExtResource( "2_mlfi0" )]
+visible = false
+
+[node name="Head" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
+mesh = SubResource( "SphereMesh_ua1oe" )
+skeleton = NodePath("../../..")
+
+[node name="Face" type="MeshInstance3D" parent="Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.211708)
+mesh = SubResource( "SphereMesh_r4q6o" )
+skeleton = NodePath("../..")
+
+[node name="ViewHelper" type="Node3D" parent="Head"]
+transform = Transform3D(1, 0, 0, 0, 0.988494, -0.151261, 0, 0.151261, 0.988494, 0, 0, 0)
+
+[node name="Slapper" parent="Head/ViewHelper" instance=ExtResource( "2_w6l2w" )]
+transform = Transform3D(0.986551, -0.0607031, -0.151761, 0.00491707, 0.939081, -0.34366, 0.163377, 0.338292, 0.926751, 0.151, -0.148, -0.422)
+visible = false
+consec_shots = 0.0
+
+[node name="Camera3D" type="Camera3D" parent="Head/ViewHelper"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.25)
+cull_mask = 1048571
+near = 0.01
+
+[node name="ShootCast" type="RayCast3D" parent="Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.57628e-07, -0.25)
+visible = false
+target_position = Vector3(0, 0, -100)
+collision_mask = 5
+hit_from_inside = true
+collide_with_areas = true
+
+[node name="VectorCube" parent="Head/ShootCast" instance=ExtResource( "2_mlfi0" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 46.7139, 0, 0, 0)
+visible = false
+
+[node name="SlapArea" type="Area3D" parent="Head"]
+collision_layer = 8
+collision_mask = 4
+input_ray_pickable = false
+monitorable = false
+
+[node name="Collision" type="CollisionShape3D" parent="Head/SlapArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 1.49011e-08, 0, -1.49011e-08, 1, 0, -1.19209e-07, -0.674995)
+shape = SubResource( "SphereShape3D_ngx6b" )
+
+[node name="Body" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+mesh = SubResource( "CapsuleMesh_nlv8a" )
+skeleton = NodePath("../../..")
+
+[node name="Face" type="MeshInstance3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.349766, -0.211708)
+mesh = SubResource( "SphereMesh_r4q6o" )
+skeleton = NodePath("../..")
+
+[node name="CharacterCollision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+shape = SubResource( "CapsuleShape3D_3vddd" )
+
+[node name="DamageCollision" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="HeadCollision" type="CollisionShape3D" parent="DamageCollision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
+shape = SubResource( "SphereShape3D_vrlk2" )
+
+[node name="BodyCollision" type="CollisionShape3D" parent="DamageCollision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+shape = SubResource( "CapsuleShape3D_4e5ow" )
+
+[node name="NavAgent" type="NavigationAgent3D" parent="."]
+agent_height_offset = 0.1
+
+[node name="FindTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="slap" from="Head/ViewHelper/Slapper" to="." method="_slap"]
+[connection signal="target_reached" from="NavAgent" to="." method="_target_reached"]
+[connection signal="timeout" from="FindTimer" to="." method="switch_goal"]
