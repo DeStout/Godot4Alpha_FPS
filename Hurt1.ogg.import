@@ -1,0 +1,16 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOGGVorbis"
+uid="uid://lgaf42ogngsv"
+path="res://.godot/imported/Hurt1.ogg-90095df09ea4a3210d225c6727f51d61.oggvorbisstr"
+
+[deps]
+
+source_file="res://Hurt1.ogg"
+dest_files=["res://.godot/imported/Hurt1.ogg-90095df09ea4a3210d225c6727f51d61.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0

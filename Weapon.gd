@@ -35,9 +35,9 @@ func play(animation : String, reverse : bool = true) -> void:
 func shoot(shooter : CharacterBody3D) -> void:
 	var playing
 	if shooter is Enemy:
-		playing = sfx_3d.shoot()
+		playing = sfx_3d.play_rand()
 	else:
-		playing = sfx.shoot()
+		playing = sfx.play_rand()
 	if max_ammo > 0:
 		ammo_in_mag -= 1
 	can_shoot = false

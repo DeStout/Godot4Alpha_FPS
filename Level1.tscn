@@ -35,7 +35,7 @@ script = ExtResource( "2_ctt1n" )
 spawns_ = NodePath("../Spawns")
 pickups_ = NodePath("../Pickups")
 nav_points_ = NodePath("../NavPoints")
-num_enemies = 7
+num_enemies = 3
 
 [node name="FX" type="Node3D" parent="PlayersContainer"]
 
@@ -344,5 +344,5 @@ script = SubResource( "GDScript_arxdg" )
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
 process_mode = 3
 stream = ExtResource( "5_gnk7r" )
-volume_db = -15.11
+volume_db = -20.0
 autoplay = true

@@ -134,14 +134,14 @@ script = ExtResource( "2_ndpsr" )
 
 [node name="PistolShot1" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource( "2_teqfe" )
-volume_db = -12.0
+volume_db = -16.0
 
 [node name="SFX3D" type="Node3D" parent="."]
 script = ExtResource( "2_ndpsr" )
 
 [node name="PistolShot1" type="AudioStreamPlayer3D" parent="SFX3D"]
 stream = ExtResource( "2_teqfe" )
-unit_db = -12.0
+unit_db = -16.0
 unit_size = 25.0
 max_db = -1.0
 

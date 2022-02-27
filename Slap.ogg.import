@@ -1,0 +1,16 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOGGVorbis"
+uid="uid://dvwslqt03fwb6"
+path="res://.godot/imported/Slap.ogg-f4ee19ee022f0cce98eadda4e73ce175.oggvorbisstr"
+
+[deps]
+
+source_file="res://Slap.ogg"
+dest_files=["res://.godot/imported/Slap.ogg-f4ee19ee022f0cce98eadda4e73ce175.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0

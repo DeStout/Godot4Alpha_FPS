@@ -1,0 +1,16 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOGGVorbis"
+uid="uid://dbch5f7uhvslh"
+path="res://.godot/imported/Whoosh.ogg-ea03b528d13e9b72e67cfc1e54017dd2.oggvorbisstr"
+
+[deps]
+
+source_file="res://Whoosh.ogg"
+dest_files=["res://.godot/imported/Whoosh.ogg-ea03b528d13e9b72e67cfc1e54017dd2.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0

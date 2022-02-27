@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://dcerb2l2eaj1d"]
+[gd_scene load_steps=9 format=3 uid="uid://dcerb2l2eaj1d"]
 
 [ext_resource type="Script" path="res://Weapon.gd" id="1_xfwmw"]
 [ext_resource type="Script" path="res://SFX.gd" id="2_7kghw"]
+[ext_resource type="AudioStream" uid="uid://dbch5f7uhvslh" path="res://Whoosh.ogg" id="3_fiykj"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1c24e"]
 albedo_color = Color(1, 0.803922, 0.627451, 1)
@@ -118,7 +119,17 @@ anims/Switch = SubResource( "Animation_xs7cn" )
 [node name="SFX" type="Node" parent="."]
 script = ExtResource( "2_7kghw" )
 
+[node name="Swing1" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource( "3_fiykj" )
+volume_db = -10.0
+
 [node name="SFX3D" type="Node" parent="."]
 script = ExtResource( "2_7kghw" )
+
+[node name="Swing1" type="AudioStreamPlayer3D" parent="SFX3D"]
+stream = ExtResource( "3_fiykj" )
+unit_db = -10.0
+unit_size = 15.0
+max_db = 0.0
 
 [connection signal="timeout" from="CanShoot" to="." method="_can_shoot"]

@@ -23,10 +23,15 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 const SPEED := 5.0
 const JUMP_VELOCITY := 4.0
 
+@onready var hurt_sfx := $HurtSFX
+@onready var slap_sfx := $SlapSFX
+@onready var hurt_timer := $HurtTimer
 var health := 200
 
 
 func _ready() -> void:
+	hurt_timer.one_shot = true
+	
 	weapon_transforms = weapon_transforms.new()
 	$CameraHelper/Recoil/ShootCast.add_exception($DamageCollision)
 	$CameraHelper/Recoil/ShootCast.add_exception($CameraHelper/Recoil/SlapArea)
@@ -169,6 +174,7 @@ func _slap() -> void:
 				if target.get_parent().has_method("is_shot"):
 					parent = target.get_parent()
 					if parent != self:
+						slap_sfx.play_rand()
 						parent.is_shot(equipped.base_damage, 1, self)
 
 
@@ -244,6 +250,9 @@ func add_ammo(amount : int, ammo_for : int, picked_up : Callable) -> void:
 
 
 func is_shot(damage : int, shape_id : int, shooter : Enemy) -> void:
+	if hurt_timer.is_stopped():
+		hurt_sfx.play_rand()
+		hurt_timer.start(0.5)
 	if $DamageCollision.shape_owner_get_owner(shape_id) == $DamageCollision/HeadCollision:
 		damage *= 1.5
 	health -= damage

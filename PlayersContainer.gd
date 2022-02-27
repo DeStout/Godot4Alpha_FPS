@@ -63,7 +63,6 @@ func _spawn(character : CharacterBody3D) -> Node3D:
 func remove_enemy(dead_enemy : CharacterBody3D) -> void:
 	var save_name : String = dead_enemy.name
 	var save_label : Label = dead_enemy.debug_label
-	save_label.text = "Dead"
 	enemies.erase(dead_enemy)
 	dead_enemy.queue_free()
 	
