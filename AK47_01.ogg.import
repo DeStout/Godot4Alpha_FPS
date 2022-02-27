@@ -1,0 +1,16 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOGGVorbis"
+uid="uid://cxxrutk5uaueb"
+path="res://.godot/imported/AK47_01.ogg-3be74176e0e59ee4db2704ebab87881a.oggvorbisstr"
+
+[deps]
+
+source_file="res://AK47_01.ogg"
+dest_files=["res://.godot/imported/AK47_01.ogg-3be74176e0e59ee4db2704ebab87881a.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0

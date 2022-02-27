@@ -1,0 +1,16 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOGGVorbis"
+uid="uid://dmvmcvucbpnmh"
+path="res://.godot/imported/Generic_01.ogg-0b46945ab27f8e60a22620066187fc6d.oggvorbisstr"
+
+[deps]
+
+source_file="res://Generic_01.ogg"
+dest_files=["res://.godot/imported/Generic_01.ogg-0b46945ab27f8e60a22620066187fc6d.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
