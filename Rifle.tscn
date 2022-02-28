@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://doh1eeqmml1o7"]
+[gd_scene load_steps=11 format=3 uid="uid://b7okrapce2f0d"]
 
 [ext_resource type="Script" path="res://Weapon.gd" id="1_pmnm4"]
 [ext_resource type="Script" path="res://SFX.gd" id="2_0xrbn"]
 [ext_resource type="AudioStream" uid="uid://cqi8csv8ynwit" path="res://SMG_01.ogg" id="3_h1kpo"]
+[ext_resource type="AudioStream" uid="uid://c1rwua6fwo1vq" path="res://RifleReload.ogg" id="4_clao8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rkirq"]
 diffuse_mode = 2
@@ -111,7 +112,7 @@ rps = 10.0
 v_recoil = 0.025
 h_recoil = 0.012
 consec_shots = 40.0
-base_damage = 25
+base_damage = 22.5
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(-0.999999, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, 0, 0)
@@ -131,20 +132,35 @@ anims/Reload = SubResource( "Animation_ccidl" )
 anims/Shoot = SubResource( "Animation_qqyvu" )
 anims/Switch = SubResource( "Animation_fl7bl" )
 
-[node name="SFX" type="Node" parent="."]
+[node name="ShootSFX" type="Node" parent="."]
 script = ExtResource( "2_0xrbn" )
 
-[node name="RifleShot1" type="AudioStreamPlayer" parent="SFX"]
+[node name="RifleShot1" type="AudioStreamPlayer" parent="ShootSFX"]
 stream = ExtResource( "3_h1kpo" )
 volume_db = -12.0
 
-[node name="SFX3D" type="Node3D" parent="."]
+[node name="ShootSFX3D" type="Node3D" parent="."]
 script = ExtResource( "2_0xrbn" )
 
-[node name="RifleShot2" type="AudioStreamPlayer3D" parent="SFX3D"]
+[node name="RifleShot2" type="AudioStreamPlayer3D" parent="ShootSFX3D"]
 stream = ExtResource( "3_h1kpo" )
 unit_db = -12.0
 unit_size = 25.0
 max_db = -1.0
+
+[node name="ReloadSFX" type="Node" parent="."]
+script = ExtResource( "2_0xrbn" )
+
+[node name="Reload" type="AudioStreamPlayer" parent="ReloadSFX"]
+stream = ExtResource( "4_clao8" )
+
+[node name="ReloadSFX3D" type="Node3D" parent="."]
+script = ExtResource( "2_0xrbn" )
+
+[node name="Reload" type="AudioStreamPlayer3D" parent="ReloadSFX3D"]
+stream = ExtResource( "4_clao8" )
+unit_size = 25.0
+max_db = -1.0
+max_distance = 20.0
 
 [connection signal="timeout" from="CanShoot" to="." method="_can_shoot"]

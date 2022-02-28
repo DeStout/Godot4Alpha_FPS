@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://0vpye7iy18yy"]
+[gd_scene load_steps=8 format=3 uid="uid://0vpye7iy18yy"]
 
 [ext_resource type="PackedScene" uid="uid://q0227uvq4f2x" path="res://Level1Base.tscn" id="1_il041"]
 [ext_resource type="Script" path="res://PlayersContainer.gd" id="2_ctt1n"]
 [ext_resource type="PackedScene" uid="uid://bbtdsqxphk4vc" path="res://Ammo.tscn" id="3_fq3o5"]
 [ext_resource type="PackedScene" uid="uid://c7bevb48dw7f6" path="res://WeaponPickup.tscn" id="4_bexsk"]
 [ext_resource type="AudioStream" uid="uid://cseiawxqwcafv" path="res://Perfect_Eye_v1_Looping_Demo.ogg" id="5_gnk7r"]
+[ext_resource type="PackedScene" uid="uid://ban4ymlmqylro" path="res://HealthPack.tscn" id="5_sik53"]
 
 [sub_resource type="GDScript" id="GDScript_arxdg"]
 resource_name = "Pause"
@@ -35,7 +36,7 @@ script = ExtResource( "2_ctt1n" )
 spawns_ = NodePath("../Spawns")
 pickups_ = NodePath("../Pickups")
 nav_points_ = NodePath("../NavPoints")
-num_enemies = 3
+num_enemies = 5
 
 [node name="FX" type="Node3D" parent="PlayersContainer"]
 
@@ -262,6 +263,14 @@ respawn_time = 5
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.5, 0, -26.5)
 weapon = 0
 respawn_time = 5
+
+[node name="HealthPack" parent="Pickups" instance=ExtResource( "5_sik53" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.25, 0, 3.5)
+respawn_time = 30
+
+[node name="HealthPack2" parent="Pickups" instance=ExtResource( "5_sik53" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.25, 0, -3.5)
+respawn_time = 30
 
 [node name="NavPoints" type="Node3D" parent="."]
 

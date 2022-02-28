@@ -128,8 +128,9 @@ func _nearest_ammo(ammo_type : int) -> Array:
 func _get_ammo_list(ammo_type : int = -1) -> Array:
 	var ammos := []
 	for pickup in enemy.pickups.get_children():
-		if pickup.weapon == ammo_type:
-			ammos.append(pickup)
+		if pickup is Ammo:
+			if pickup.weapon == ammo_type:
+				ammos.append(pickup)
 	return ammos
 
 

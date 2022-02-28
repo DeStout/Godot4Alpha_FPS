@@ -25,13 +25,13 @@ const JUMP_VELOCITY := 4.0
 
 @onready var hurt_sfx := $HurtSFX
 @onready var slap_sfx := $SlapSFX
-@onready var hurt_timer := $HurtTimer
+@onready var death_sfx := $DeathSFX
+const MAX_HEALTH := 200
 var health := 200
+var damage_tween : Tween
 
 
 func _ready() -> void:
-	hurt_timer.one_shot = true
-	
 	weapon_transforms = weapon_transforms.new()
 	$CameraHelper/Recoil/ShootCast.add_exception($DamageCollision)
 	$CameraHelper/Recoil/ShootCast.add_exception($CameraHelper/Recoil/SlapArea)
@@ -90,18 +90,19 @@ func _input(event) -> void:
 				_reload()
 		
 		if event.is_action_pressed("Weapon1"):
-			if slapper != null:
+			if slapper != null and !is_shooting:
 				_switch_weapon(slapper)
 		elif event.is_action_pressed("Weapon2"):
-			if pistol != null:
+			if pistol != null and !is_shooting:
 				_switch_weapon(pistol)
 		elif event.is_action_pressed("Weapon3"):
-			if rifle != null:
+			if rifle != null and !is_shooting:
 				_switch_weapon(rifle)
 
 
 func _shoot() -> void:
 	is_reloading = false
+	equipped.stop_sfx()
 	reset_recoil = false
 	equipped.shoot(self)
 	_update_HUD()
@@ -127,7 +128,7 @@ func _shoot() -> void:
 				container.create_bullet_hole(collision_point, collision_normal)
 	else:
 		await equipped.slap
-	
+		
 	if !equipped.is_automatic or equipped.ammo_in_mag == 0:
 		is_shooting = false
 
@@ -181,9 +182,10 @@ func _slap() -> void:
 func _reload() -> void:
 	if equipped.total_ammo > 0 and equipped.ammo_in_mag < equipped.mag_size:
 		is_reloading = true
+		equipped.play_sfx("Reload", false)
 		await equipped.play("Reload")
 		if is_reloading:
-			equipped.reload()
+			equipped.reload(self)
 			_update_HUD()
 		is_reloading = false
 
@@ -197,6 +199,14 @@ func _update_HUD() -> void:
 #		$CameraHelper/Recoil/Camera/HUD.visible = false
 #	else:
 #		$CameraHelper/Recoil/Camera/HUD.visible = true
+
+
+func _show_damage() -> void:
+	$CameraHelper/Recoil/Camera/HUD/Damage.modulate.a = 1.5
+	damage_tween = self.create_tween()
+	damage_tween.tween_property($CameraHelper/Recoil/Camera/HUD/Damage, \
+							"modulate", Color.TRANSPARENT, 0.5).set_delay(0.5)
+	
 
 
 func pickup_weapon(weapon : int, pickup : WeaponPickup, picked_up : Callable) -> void:
@@ -228,6 +238,7 @@ func _switch_weapon(weapon) -> void:
 	if equipped != weapon:
 		if equipped != null:
 			equipped.can_shoot = false
+#			_reset_recoil()
 			await equipped.play("Switch", false)
 			equipped.visible = false
 		equipped = weapon
@@ -249,13 +260,36 @@ func add_ammo(amount : int, ammo_for : int, picked_up : Callable) -> void:
 	_update_HUD()
 
 
+func add_health(amount : int, picked_up : Callable) -> void:
+	if health < MAX_HEALTH:
+		health += amount
+		health = min(MAX_HEALTH, health)
+		picked_up.call()
+		_update_HUD()
+
+
 func is_shot(damage : int, shape_id : int, shooter : Enemy) -> void:
-	if hurt_timer.is_stopped():
+	if $HurtTimer.is_stopped():
 		hurt_sfx.play_rand()
-		hurt_timer.start(0.5)
+		$HurtTimer.start(0.5)
 	if $DamageCollision.shape_owner_get_owner(shape_id) == $DamageCollision/HeadCollision:
 		damage *= 1.5
+	
 	health -= damage
-	if health <= 0:
-		container.remove_player(self, shooter)
+	health = max(health, 0)
+	_show_damage()
 	_update_HUD()
+	
+	if health <= 0:
+		_vanish()
+		var death_rattle = death_sfx.play_rand()
+		await death_rattle.finished
+		container.remove_player(self, shooter)
+
+
+func _vanish() -> void:
+	set_physics_process(false)
+	visible = false
+	$CharacterCollision.disabled = true
+	$DamageCollision/HeadCollision.disabled = true
+	$DamageCollision/BodyCollision.disabled = true

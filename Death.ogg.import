@@ -1,0 +1,16 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOGGVorbis"
+uid="uid://cxkp38ggphhnl"
+path="res://.godot/imported/Death.ogg-257d754633215eb8c5783a20a8e57697.oggvorbisstr"
+
+[deps]
+
+source_file="res://Death.ogg"
+dest_files=["res://.godot/imported/Death.ogg-257d754633215eb8c5783a20a8e57697.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -47,7 +47,7 @@ var default_color : Color
 var health : int = 100
 @onready var hurt_sfx := $HurtSFX
 @onready var slap_sfx := $SlapSFX
-@onready var hurt_timer := $HurtTimer
+@onready var death_sfx := $DeathSFX
 
 
 func _ready():
@@ -235,9 +235,10 @@ func _shoot() -> void:
 func _reload() -> void:
 	if equipped.total_ammo > 0 and equipped.ammo_in_mag < equipped.mag_size:
 		is_reloading = true
+		equipped.play_sfx("Reload", true)
 		await equipped.play("Reload")
 		if is_reloading:
-			equipped.reload()
+			equipped.reload(self)
 		is_reloading = false
 
 
@@ -318,14 +319,17 @@ func add_ammo(amount : int, ammo_for : int, picked_up : Callable) -> void:
 
 
 func is_shot(damage : int, shape_id : int, enemy : CharacterBody3D) -> void:
-	if hurt_timer.is_stopped():
+	if $HurtTimer.is_stopped():
 		hurt_sfx.play_rand()
-		hurt_timer.start(0.5)
+		$HurtTimer.start(0.5)
 	if $DamageCollision.shape_owner_get_owner(shape_id) == $DamageCollision/HeadCollision:
 		damage *= 1.5
 	health -= damage
 	if health <= 0:
 		debug_label.text = "Dead"
+		_vanish()
+		var death_rattle = death_sfx.play_rand()
+		await death_rattle.finished
 		container.remove_enemy(self)
 		return
 	
@@ -337,3 +341,11 @@ func is_shot(damage : int, shape_id : int, enemy : CharacterBody3D) -> void:
 		$Head.get_active_material(0).albedo_color = Color.RED
 		await get_tree().create_timer(0.1).timeout
 		$Head.get_active_material(0).albedo_color = default_color
+
+
+func _vanish() -> void:
+	set_physics_process(false)
+	visible = false
+	$CharacterCollision.disabled = true
+	$DamageCollision/HeadCollision.disabled = true
+	$DamageCollision/BodyCollision.disabled = true

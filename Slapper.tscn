@@ -95,13 +95,13 @@ tracks/1/keys = PackedFloat32Array(0, 1, 0, 1, 0, -7.54979e-08, 0.25, 1, 0, 1, 0
 
 [node name="Slapper" type="Node3D"]
 script = ExtResource( "1_xfwmw" )
-is_automatic = true
 max_ammo = 0
 mag_size = 0
 rps = 1.333
 v_recoil = 0.0
 h_recoil = 0.0
-base_damage = 50
+consec_shots = 0.0
+base_damage = 50.0
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(-0.900172, 0.361941, -0.242258, 0.371136, 0.928542, 0.00822078, 0.227922, -0.0825103, -0.970177, -0.170966, -0.077074, 0.0438818)
@@ -116,17 +116,17 @@ one_shot = true
 anims/Shoot = SubResource( "Animation_gel0f" )
 anims/Switch = SubResource( "Animation_xs7cn" )
 
-[node name="SFX" type="Node" parent="."]
+[node name="ShootSFX" type="Node" parent="."]
 script = ExtResource( "2_7kghw" )
 
-[node name="Swing1" type="AudioStreamPlayer" parent="SFX"]
+[node name="Swing1" type="AudioStreamPlayer" parent="ShootSFX"]
 stream = ExtResource( "3_fiykj" )
 volume_db = -10.0
 
-[node name="SFX3D" type="Node" parent="."]
+[node name="ShootSFX3D" type="Node" parent="."]
 script = ExtResource( "2_7kghw" )
 
-[node name="Swing1" type="AudioStreamPlayer3D" parent="SFX3D"]
+[node name="Swing1" type="AudioStreamPlayer3D" parent="ShootSFX3D"]
 stream = ExtResource( "3_fiykj" )
 unit_db = -10.0
 unit_size = 15.0

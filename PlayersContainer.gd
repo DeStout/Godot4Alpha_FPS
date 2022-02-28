@@ -5,7 +5,7 @@ extends Node3D
 @export_node_path(Node3D) var pickups_
 @export_node_path(Node3D) var nav_points_
 @export var respawn_time := 5.0
-@export var num_enemies := 8
+@export_range(0,15) var num_enemies := 7
 
 var spawns : Node3D
 var pickups : Node3D
@@ -60,6 +60,29 @@ func _spawn(character : CharacterBody3D) -> Node3D:
 	return spawn
 
 
+func remove_player(dead_player : CharacterBody3D, killer : Enemy = null) -> void:
+	dead_player.queue_free()
+	player = null
+	if killer != null:
+		killer.camera.current = true
+	
+	for enemy in enemies:
+		enemy.player = null
+		enemy.player_is_seen()
+		enemy.switch_goal()
+			
+	await get_tree().create_timer(respawn_time).timeout
+	
+	player = player_.instantiate()
+	_spawn(player)
+	if killer != null:
+		killer.camera.current = false
+	for enemy in enemies:
+		enemy.player = player
+		
+	Debug.player = player
+
+
 func remove_enemy(dead_enemy : CharacterBody3D) -> void:
 	var save_name : String = dead_enemy.name
 	var save_label : Label = dead_enemy.debug_label
@@ -77,25 +100,6 @@ func remove_enemy(dead_enemy : CharacterBody3D) -> void:
 	enemy.debug_label = save_label
 	enemy.switch_goal()
 	enemies.append(enemy)
-
-
-func remove_player(dead_player : CharacterBody3D, killer : Enemy) -> void:
-	dead_player.queue_free()
-	player = null
-	killer.camera.current = true
-	
-	for enemy in enemies:
-		enemy.player = null
-		enemy.player_is_seen()
-		enemy.switch_goal()
-			
-	await get_tree().create_timer(respawn_time).timeout
-	
-	player = player_.instantiate()
-	_spawn(player)
-	killer.camera.current = false
-	for enemy in enemies:
-		enemy.player = player
 
 
 func create_shot_trail(shoot_from : Vector3, shoot_to: Vector3) -> void:

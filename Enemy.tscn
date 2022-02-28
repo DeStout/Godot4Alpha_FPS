@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://2i4n8du2bu57"]
+[gd_scene load_steps=18 format=3 uid="uid://2i4n8du2bu57"]
 
 [ext_resource type="Script" path="res://Enemy.gd" id="1_piv5o"]
 [ext_resource type="PackedScene" uid="uid://cy12nf62sv60i" path="res://VectorCube.tscn" id="2_mlfi0"]
@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://lgaf42ogngsv" path="res://Hurt1.ogg" id="5_nudx1"]
 [ext_resource type="AudioStream" uid="uid://tevag2c1n34i" path="res://Hurt2.ogg" id="6_4a5j5"]
 [ext_resource type="AudioStream" uid="uid://dvwslqt03fwb6" path="res://Slap.ogg" id="7_gwkte"]
+[ext_resource type="AudioStream" uid="uid://cxkp38ggphhnl" path="res://Death.ogg" id="8_sdjxy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7kyy2"]
 resource_local_to_scene = true
@@ -85,7 +86,6 @@ transform = Transform3D(1, 0, 0, 0, 0.988494, -0.151261, 0, 0.151261, 0.988494, 
 [node name="Slapper" parent="Head/ViewHelper" instance=ExtResource( "2_w6l2w" )]
 transform = Transform3D(0.986551, -0.0607031, -0.151761, 0.00491707, 0.939081, -0.34366, 0.163377, 0.338292, 0.926751, 0.151, -0.148, -0.422)
 visible = false
-consec_shots = 0.0
 
 [node name="Camera3D" type="Camera3D" parent="Head/ViewHelper"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.25)
@@ -147,10 +147,16 @@ one_shot = true
 script = ExtResource( "4_fow25" )
 
 [node name="Hurt1" type="AudioStreamPlayer3D" parent="HurtSFX"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 stream = ExtResource( "5_nudx1" )
+max_db = 0.0
+max_distance = 20.0
 
 [node name="Hurt2" type="AudioStreamPlayer3D" parent="HurtSFX"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 stream = ExtResource( "6_4a5j5" )
+max_db = 0.0
+max_distance = 20.0
 
 [node name="SlapSFX" type="Node" parent="."]
 script = ExtResource( "4_fow25" )
@@ -158,6 +164,14 @@ script = ExtResource( "4_fow25" )
 [node name="Slap1" type="AudioStreamPlayer" parent="SlapSFX"]
 stream = ExtResource( "7_gwkte" )
 volume_db = 6.0
+
+[node name="DeathSFX" type="Node" parent="."]
+script = ExtResource( "4_fow25" )
+
+[node name="Death1" type="AudioStreamPlayer3D" parent="DeathSFX"]
+stream = ExtResource( "8_sdjxy" )
+max_db = 0.0
+max_distance = 20.0
 
 [node name="NavAgent" type="NavigationAgent3D" parent="."]
 agent_height_offset = 0.1

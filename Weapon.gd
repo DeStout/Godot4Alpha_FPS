@@ -4,14 +4,17 @@ class_name Weapon
 @export var is_automatic := false
 @export var max_ammo := 21
 @export var mag_size := 7
-@export var rps := 1.0
+@export var rps : float = 1.0
 @export var v_recoil := 0.1
 @export var h_recoil := 0.1
 @export var consec_shots := 4.0
-@export var base_damage := 10
+@export var base_damage = 10.0
 
-@onready var sfx := $SFX
-@onready var sfx_3d := $SFX3D
+@onready var shoot_sfx := $ShootSFX
+@onready var shoot_sfx_3d := $ShootSFX3D
+@onready var reload_sfx := $ReloadSFX
+@onready var reload_sfx_3d := $ReloadSFX3D
+var current_sfx = null
 
 signal slap
 var can_shoot := false
@@ -24,20 +27,8 @@ func _ready() -> void:
 	ammo_in_mag = mag_size
 
 
-func play(animation : String, reverse : bool = true) -> void:
-	if !reverse:
-		$AnimationPlayer.play(animation)
-	else:
-		$AnimationPlayer.play_backwards(animation)
-	await $AnimationPlayer.animation_finished
-
-
 func shoot(shooter : CharacterBody3D) -> void:
-	var playing
-	if shooter is Enemy:
-		playing = sfx_3d.play_rand()
-	else:
-		playing = sfx.play_rand()
+	play_sfx("Shoot", shooter is Enemy)
 	if max_ammo > 0:
 		ammo_in_mag -= 1
 	can_shoot = false
@@ -49,7 +40,7 @@ func _can_shoot() -> void:
 		can_shoot = true
 
 
-func reload() -> void:
+func reload(reloader : CharacterBody3D) -> void:
 	if total_ammo > mag_size - ammo_in_mag:
 		total_ammo -= mag_size-ammo_in_mag
 		ammo_in_mag = mag_size
@@ -59,6 +50,35 @@ func reload() -> void:
 	
 	if ammo_in_mag > 0:
 		can_shoot = true
+
+
+func play(animation : String, reverse : bool = true) -> void:
+	if !reverse:
+		$AnimationPlayer.play(animation)
+	else:
+		$AnimationPlayer.play_backwards(animation)
+	await $AnimationPlayer.animation_finished
+
+
+func play_sfx(sfx : String, play_3d : bool):
+	match sfx:
+		"Shoot":
+			match play_3d:
+				true:
+					current_sfx = shoot_sfx_3d.play_rand()
+				false:
+					current_sfx = shoot_sfx.play_rand()
+		"Reload":
+			match play_3d:
+				true:
+					current_sfx = reload_sfx_3d.play_rand()
+				false:
+					current_sfx = reload_sfx_3d.play_rand()
+
+
+func stop_sfx() -> void:
+	if current_sfx:
+		current_sfx.stop()
 
 
 func add_ammo(amount : int, pick_up : Callable) -> void:

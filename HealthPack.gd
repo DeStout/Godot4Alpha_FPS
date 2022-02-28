@@ -1,26 +1,22 @@
 extends Node3D
-class_name Ammo
-
-@export_enum("Pistol", "Rifle") var weapon
-@export var amount := 12
-@export var respawn_time := 60
-@export var available := true
+class_name HealthPack
 
 var picked_up : Callable = _die
 
+@export_range(0, 100) var health := 50
+@export var respawn_time := 60
+@export var available := true
+var rotation_speed := 1.8
 
-func _ready() -> void:
-	match weapon:
-		0:
-			$Pistol.visible = true
-		1:
-			$Rifle.visible = true
+
+func _process(delta) -> void:
+	$Spinner.rotate_y(rotation_speed * delta)
 
 
 func _body_entered(body) -> void:
 	if body is CharacterBody3D:
-		if body.has_method("add_ammo"):
-			body.add_ammo(amount, weapon, picked_up)
+		if body.has_method("add_health"):
+			body.add_health(health, picked_up)
 
 
 func _die() -> void:

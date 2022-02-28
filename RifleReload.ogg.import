@@ -1,0 +1,16 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOGGVorbis"
+uid="uid://c1rwua6fwo1vq"
+path="res://.godot/imported/RifleReload.ogg-24b33b09742f4fda50526ec2ea9bfec6.oggvorbisstr"
+
+[deps]
+
+source_file="res://RifleReload.ogg"
+dest_files=["res://.godot/imported/RifleReload.ogg-24b33b09742f4fda50526ec2ea9bfec6.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
