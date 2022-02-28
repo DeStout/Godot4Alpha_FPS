@@ -3,7 +3,7 @@ extends Control
 
 var is_visible := true
 var fps_visible := true
-var enemy_behavior_visible := true
+var enemy_behavior_visible := false
 
 var player : Player
 var enemies : Array

@@ -14,3 +14,7 @@ func play_rand():
 		return sfx
 	else:
 		return null
+
+
+func has_sfx(sfx) -> bool:
+	return sfxs.has(sfx)

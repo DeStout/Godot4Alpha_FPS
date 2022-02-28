@@ -287,6 +287,7 @@ func _switch_weapon(weapon) -> void:
 	is_reloading = false
 	if equipped != weapon:
 		if equipped != null:
+			equipped.stop_sfx()
 			equipped.can_shoot = false
 			await equipped.play("Switch", false)
 			equipped.visible = false

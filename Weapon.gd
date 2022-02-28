@@ -73,12 +73,13 @@ func play_sfx(sfx : String, play_3d : bool):
 				true:
 					current_sfx = reload_sfx_3d.play_rand()
 				false:
-					current_sfx = reload_sfx_3d.play_rand()
+					current_sfx = reload_sfx.play_rand()
 
 
 func stop_sfx() -> void:
 	if current_sfx:
-		current_sfx.stop()
+		if !(shoot_sfx.has_sfx(current_sfx) or shoot_sfx_3d.has_sfx(current_sfx)):
+			current_sfx.stop()
 
 
 func add_ammo(amount : int, pick_up : Callable) -> void:

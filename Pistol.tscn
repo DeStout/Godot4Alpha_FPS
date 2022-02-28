@@ -151,6 +151,7 @@ script = ExtResource( "2_ndpsr" )
 
 [node name="Reload" type="AudioStreamPlayer" parent="ReloadSFX"]
 stream = ExtResource( "4_r7ecp" )
+volume_db = -3.0
 
 [node name="ReloadSFX3D" type="Node3D" parent="."]
 script = ExtResource( "2_ndpsr" )
