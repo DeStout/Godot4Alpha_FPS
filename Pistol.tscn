@@ -148,6 +148,7 @@ stream = ExtResource( "3_c5mdq" )
 unit_db = -16.0
 unit_size = 25.0
 max_db = -1.0
+max_distance = 10.0
 bus = &"SFX"
 
 [node name="ShootSFX" type="Node" parent="."]
@@ -166,6 +167,7 @@ stream = ExtResource( "2_teqfe" )
 unit_db = -16.0
 unit_size = 25.0
 max_db = -1.0
+max_distance = 25.0
 bus = &"SFX"
 
 [node name="ReloadSFX" type="Node" parent="."]
@@ -181,7 +183,7 @@ script = ExtResource( "2_ndpsr" )
 
 [node name="Reload" type="AudioStreamPlayer3D" parent="ReloadSFX3D"]
 stream = ExtResource( "4_r7ecp" )
-max_distance = 20.0
+max_distance = 15.0
 bus = &"SFX"
 
 [node name="AmmoSFX" type="Node" parent="."]
@@ -200,6 +202,7 @@ stream = ExtResource( "4_fst4g" )
 unit_db = -16.0
 unit_size = 25.0
 max_db = -1.0
+max_distance = 10.0
 bus = &"SFX"
 
 [connection signal="timeout" from="CanShoot" to="." method="_can_shoot"]

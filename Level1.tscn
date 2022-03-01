@@ -243,26 +243,31 @@ amount = 30
 [node name="RiflePickup" parent="Pickups" instance=ExtResource( "4_bexsk" )]
 weapon = 1
 respawn_time = 15
+available = false
 
 [node name="PistolPickup1" parent="Pickups" instance=ExtResource( "4_bexsk" )]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 4, 0)
 weapon = 0
 respawn_time = 5
+available = false
 
 [node name="PistolPickup2" parent="Pickups" instance=ExtResource( "4_bexsk" )]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.5, 0, 26.5)
 weapon = 0
 respawn_time = 5
+available = false
 
 [node name="PistolPickup3" parent="Pickups" instance=ExtResource( "4_bexsk" )]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 4, 0)
 weapon = 0
 respawn_time = 5
+available = false
 
 [node name="PistolPickup4" parent="Pickups" instance=ExtResource( "4_bexsk" )]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.5, 0, -26.5)
 weapon = 0
 respawn_time = 5
+available = false
 
 [node name="HealthPack" parent="Pickups" instance=ExtResource( "5_sik53" )]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.25, 0, 3.5)

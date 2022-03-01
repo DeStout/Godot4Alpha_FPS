@@ -150,6 +150,7 @@ stream = ExtResource( "3_7utsb" )
 unit_db = -16.0
 unit_size = 25.0
 max_db = -1.0
+max_distance = 10.0
 bus = &"SFX"
 
 [node name="ShootSFX" type="Node" parent="."]
@@ -160,16 +161,6 @@ stream = ExtResource( "3_h1kpo" )
 volume_db = -12.0
 bus = &"SFX"
 
-[node name="AmmoSFX3D" type="Node3D" parent="."]
-script = ExtResource( "2_0xrbn" )
-
-[node name="PickupSFX" type="AudioStreamPlayer3D" parent="AmmoSFX3D"]
-stream = ExtResource( "4_2mgjt" )
-unit_db = -16.0
-unit_size = 25.0
-max_db = -1.0
-bus = &"SFX"
-
 [node name="ShootSFX3D" type="Node3D" parent="."]
 script = ExtResource( "2_0xrbn" )
 
@@ -178,6 +169,7 @@ stream = ExtResource( "3_h1kpo" )
 unit_db = -12.0
 unit_size = 25.0
 max_db = -1.0
+max_distance = 25.0
 bus = &"SFX"
 
 [node name="ReloadSFX" type="Node" parent="."]
@@ -195,7 +187,7 @@ script = ExtResource( "2_0xrbn" )
 stream = ExtResource( "4_clao8" )
 unit_size = 25.0
 max_db = -1.0
-max_distance = 20.0
+max_distance = 15.0
 bus = &"SFX"
 
 [node name="AmmoSFX" type="Node" parent="."]
@@ -204,6 +196,17 @@ script = ExtResource( "2_0xrbn" )
 [node name="Ammo" type="AudioStreamPlayer" parent="AmmoSFX"]
 stream = ExtResource( "4_2mgjt" )
 volume_db = -16.0
+bus = &"SFX"
+
+[node name="AmmoSFX3D" type="Node3D" parent="."]
+script = ExtResource( "2_0xrbn" )
+
+[node name="PickupSFX" type="AudioStreamPlayer3D" parent="AmmoSFX3D"]
+stream = ExtResource( "4_2mgjt" )
+unit_db = -16.0
+unit_size = 25.0
+max_db = -1.0
+max_distance = 10.0
 bus = &"SFX"
 
 [connection signal="timeout" from="CanShoot" to="." method="_can_shoot"]

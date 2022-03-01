@@ -1,12 +1,16 @@
-[gd_scene load_steps=18 format=3 uid="uid://2i4n8du2bu57"]
+[gd_scene load_steps=22 format=3 uid="uid://2i4n8du2bu57"]
 
 [ext_resource type="Script" path="res://Enemy.gd" id="1_piv5o"]
 [ext_resource type="PackedScene" uid="uid://cy12nf62sv60i" path="res://VectorCube.tscn" id="2_mlfi0"]
 [ext_resource type="PackedScene" uid="uid://dcerb2l2eaj1d" path="res://Slapper.tscn" id="2_w6l2w"]
 [ext_resource type="Script" path="res://SFX.gd" id="4_fow25"]
+[ext_resource type="AudioStream" uid="uid://bgwvwcsm8gph8" path="res://footstep1.ogg" id="5_587yn"]
 [ext_resource type="AudioStream" uid="uid://lgaf42ogngsv" path="res://Hurt1.ogg" id="5_nudx1"]
 [ext_resource type="AudioStream" uid="uid://tevag2c1n34i" path="res://Hurt2.ogg" id="6_4a5j5"]
+[ext_resource type="AudioStream" uid="uid://dxk5opjm6pasr" path="res://footstep2.ogg" id="6_178uj"]
 [ext_resource type="AudioStream" uid="uid://dvwslqt03fwb6" path="res://Slap.ogg" id="7_gwkte"]
+[ext_resource type="AudioStream" uid="uid://b183f2nb6ap8c" path="res://footstep3.ogg" id="7_qgqgh"]
+[ext_resource type="AudioStream" uid="uid://dyeb4uhsel3sb" path="res://footstep4.ogg" id="8_jtmmn"]
 [ext_resource type="AudioStream" uid="uid://cxkp38ggphhnl" path="res://Death.ogg" id="8_sdjxy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7kyy2"]
@@ -146,6 +150,40 @@ shape = SubResource( "SphereShape3D_vrlk2" )
 [node name="BodyCollision" type="CollisionShape3D" parent="DamageCollision"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.625, 0)
 shape = SubResource( "CapsuleShape3D_4e5ow" )
+
+[node name="WalkTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="WalkSFX" type="Node3D" parent="."]
+script = ExtResource( "4_fow25" )
+
+[node name="Walk1" type="AudioStreamPlayer3D" parent="WalkSFX"]
+stream = ExtResource( "5_587yn" )
+max_db = 0.0
+pitch_scale = 0.85
+max_distance = 5.0
+bus = &"SFX"
+
+[node name="Walk2" type="AudioStreamPlayer3D" parent="WalkSFX"]
+stream = ExtResource( "6_178uj" )
+max_db = 0.0
+pitch_scale = 0.85
+max_distance = 5.0
+bus = &"SFX"
+
+[node name="Walk3" type="AudioStreamPlayer3D" parent="WalkSFX"]
+stream = ExtResource( "7_qgqgh" )
+max_db = 0.0
+pitch_scale = 0.85
+max_distance = 5.0
+bus = &"SFX"
+
+[node name="Walk4" type="AudioStreamPlayer3D" parent="WalkSFX"]
+stream = ExtResource( "8_jtmmn" )
+max_db = 0.0
+pitch_scale = 0.85
+max_distance = 5.0
+bus = &"SFX"
 
 [node name="Slap" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( "7_gwkte" )

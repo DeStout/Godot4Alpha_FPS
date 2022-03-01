@@ -47,6 +47,7 @@ var default_color : Color
 var health : int = 100
 
 # SFX
+@onready var walk_sfx := $WalkSFX
 @onready var hurt_sfx := $HurtSFX
 @onready var death_sfx := $DeathSFX
 
@@ -161,6 +162,12 @@ func _physics_process(delta) -> void:
 			var velocity_clamp := MAX_VELOCITY / velocity2D.length()
 			motion_velocity.x *= velocity_clamp
 			motion_velocity.z *= velocity_clamp
+	
+	if $WalkTimer.is_stopped():
+		var vel_2d := Vector2(motion_velocity.x, motion_velocity.z)
+		if vel_2d.length() and is_on_floor():
+			walk_sfx.play_rand()
+			$WalkTimer.start(0.6)
 		
 	motion_velocity.y -= gravity * delta
 	move_and_slide()
