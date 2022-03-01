@@ -1,0 +1,16 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOGGVorbis"
+uid="uid://choojvhhegbm6"
+path="res://.godot/imported/PickupArmor.ogg-8844a974711f3d290a5a99682a461ecb.oggvorbisstr"
+
+[deps]
+
+source_file="res://PickupArmor.ogg"
+dest_files=["res://.godot/imported/PickupArmor.ogg-8844a974711f3d290a5a99682a461ecb.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0

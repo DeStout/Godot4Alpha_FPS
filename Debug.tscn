@@ -21,6 +21,23 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Mute" type="Label" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 121.14
+offset_top = 8.41278
+offset_right = -1369.86
+offset_bottom = -865.587
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 16
+text = "Mute:"
+horizontal_alignment = 2
+__meta__ = {
+"_edit_layout_mode": 1,
+"_edit_use_custom_anchors": false
+}
+
 [node name="Behaviors" type="VBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0

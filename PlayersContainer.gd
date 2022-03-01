@@ -49,7 +49,6 @@ func _ready() -> void:
 		enemies.append(enemy)
 		
 	Debug.player = player
-	Debug.enemies = enemies
 
 
 func _spawn(character : CharacterBody3D) -> Node3D:

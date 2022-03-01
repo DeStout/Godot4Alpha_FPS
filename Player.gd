@@ -23,9 +23,12 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 const SPEED := 5.0
 const JUMP_VELOCITY := 4.0
 
+# SFX
+@onready var walk_sfx := $WalkSFX
+@onready var health_sfx := $HealthSFX
 @onready var hurt_sfx := $HurtSFX
-@onready var slap_sfx := $SlapSFX
 @onready var death_sfx := $DeathSFX
+
 const MAX_HEALTH := 200
 var health := 200
 var damage_tween : Tween
@@ -53,7 +56,13 @@ func _physics_process(delta) -> void:
 		motion_velocity.x = move_toward(motion_velocity.x, 0, SPEED)
 		motion_velocity.z = move_toward(motion_velocity.z, 0, SPEED)
 	motion_velocity.y -= gravity * delta
-		
+	
+	if $WalkTimer.is_stopped():
+		var vel_2d := Vector2(motion_velocity.x, motion_velocity.z)
+		if vel_2d.length() and is_on_floor():
+			walk_sfx.play_rand()
+			$WalkTimer.start(0.6)
+	
 	move_and_slide()
 	
 	if position.y < -10:
@@ -175,7 +184,7 @@ func _slap() -> void:
 				if target.get_parent().has_method("is_shot"):
 					parent = target.get_parent()
 					if parent != self:
-						slap_sfx.play_rand()
+						$Slap.play()
 						parent.is_shot(equipped.base_damage, 1, self)
 
 
@@ -206,7 +215,6 @@ func _show_damage() -> void:
 	damage_tween = self.create_tween()
 	damage_tween.tween_property($CameraHelper/Recoil/Camera/HUD/Damage, \
 							"modulate", Color.TRANSPARENT, 0.5).set_delay(0.5)
-	
 
 
 func pickup_weapon(weapon : int, pickup : WeaponPickup, picked_up : Callable) -> void:
@@ -220,6 +228,8 @@ func pickup_weapon(weapon : int, pickup : WeaponPickup, picked_up : Callable) ->
 				pistol = instance
 				pistol.position = weapon_transforms.PISTOL_POSITION
 				pistol.rotation = weapon_transforms.PISTOL_ROTATION
+				$CameraHelper/Recoil.add_child(instance)
+				pistol.play_sfx("Pickup", false)
 				_switch_weapon(pistol)
 			1:
 				if rifle != null:
@@ -228,8 +238,9 @@ func pickup_weapon(weapon : int, pickup : WeaponPickup, picked_up : Callable) ->
 				rifle = instance
 				rifle.position = weapon_transforms.RIFLE_POSITION
 				rifle.rotation = weapon_transforms.RIFLE_ROTATION
+				$CameraHelper/Recoil.add_child(instance)
+				rifle.play_sfx("Pickup", false)
 				_switch_weapon(rifle)
-		$CameraHelper/Recoil.add_child(instance)
 		picked_up.call()
 
 
@@ -254,16 +265,17 @@ func add_ammo(amount : int, ammo_for : int, picked_up : Callable) -> void:
 	match ammo_for:
 		0:
 			if pistol != null:
-				pistol.add_ammo(amount, picked_up)
+				pistol.add_ammo(amount, picked_up, self)
 		1:
 			if rifle != null:
-				rifle.add_ammo(amount, picked_up)
+				rifle.add_ammo(amount, picked_up, self)
 	_update_HUD()
 
 
 func add_health(amount : int, picked_up : Callable) -> void:
 	if health < MAX_HEALTH:
 		health += amount
+		health_sfx.play("Health")
 		health = min(MAX_HEALTH, health)
 		picked_up.call()
 		_update_HUD()

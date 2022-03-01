@@ -122,6 +122,7 @@ script = ExtResource( "2_7kghw" )
 [node name="Swing1" type="AudioStreamPlayer" parent="ShootSFX"]
 stream = ExtResource( "3_fiykj" )
 volume_db = -10.0
+bus = &"SFX"
 
 [node name="ShootSFX3D" type="Node" parent="."]
 script = ExtResource( "2_7kghw" )
@@ -131,5 +132,6 @@ stream = ExtResource( "3_fiykj" )
 unit_db = -10.0
 unit_size = 15.0
 max_db = 0.0
+bus = &"SFX"
 
 [connection signal="timeout" from="CanShoot" to="." method="_can_shoot"]

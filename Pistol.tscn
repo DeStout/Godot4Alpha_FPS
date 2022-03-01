@@ -1,8 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://dt3wydupff4t7"]
+[gd_scene load_steps=13 format=3 uid="uid://braqaf7oue5un"]
 
 [ext_resource type="Script" path="res://Weapon.gd" id="1_fscai"]
 [ext_resource type="Script" path="res://SFX.gd" id="2_ndpsr"]
-[ext_resource type="AudioStream" uid="uid://ddnxsubfu5btr" path="res://Silenced_01.ogg" id="2_teqfe"]
+[ext_resource type="AudioStream" uid="uid://ddnxsubfu5btr" path="res://PistolShoot.ogg" id="2_teqfe"]
+[ext_resource type="AudioStream" uid="uid://ca5b4phw81h2w" path="res://PickupWeapon.ogg" id="3_c5mdq"]
+[ext_resource type="AudioStream" uid="uid://dkhe7fneben1t" path="res://PickupAmmo.ogg" id="4_fst4g"]
 [ext_resource type="AudioStream" uid="uid://hhtniilpnas5" path="res://PistolReload.ogg" id="4_r7ecp"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rkirq"]
@@ -130,12 +132,31 @@ anims/Reload = SubResource( "Animation_0v0ow" )
 anims/Shoot = SubResource( "Animation_6ncla" )
 anims/Switch = SubResource( "Animation_w4srp" )
 
+[node name="PickupSFX" type="Node" parent="."]
+script = ExtResource( "2_ndpsr" )
+
+[node name="Pickup" type="AudioStreamPlayer" parent="PickupSFX"]
+stream = ExtResource( "3_c5mdq" )
+volume_db = -16.0
+bus = &"SFX"
+
+[node name="PickupSFX3D" type="Node3D" parent="."]
+script = ExtResource( "2_ndpsr" )
+
+[node name="Pickup" type="AudioStreamPlayer3D" parent="PickupSFX3D"]
+stream = ExtResource( "3_c5mdq" )
+unit_db = -16.0
+unit_size = 25.0
+max_db = -1.0
+bus = &"SFX"
+
 [node name="ShootSFX" type="Node" parent="."]
 script = ExtResource( "2_ndpsr" )
 
 [node name="PistolShoot1" type="AudioStreamPlayer" parent="ShootSFX"]
 stream = ExtResource( "2_teqfe" )
 volume_db = -16.0
+bus = &"SFX"
 
 [node name="ShootSFX3D" type="Node3D" parent="."]
 script = ExtResource( "2_ndpsr" )
@@ -145,6 +166,7 @@ stream = ExtResource( "2_teqfe" )
 unit_db = -16.0
 unit_size = 25.0
 max_db = -1.0
+bus = &"SFX"
 
 [node name="ReloadSFX" type="Node" parent="."]
 script = ExtResource( "2_ndpsr" )
@@ -152,6 +174,7 @@ script = ExtResource( "2_ndpsr" )
 [node name="Reload" type="AudioStreamPlayer" parent="ReloadSFX"]
 stream = ExtResource( "4_r7ecp" )
 volume_db = -3.0
+bus = &"SFX"
 
 [node name="ReloadSFX3D" type="Node3D" parent="."]
 script = ExtResource( "2_ndpsr" )
@@ -159,5 +182,24 @@ script = ExtResource( "2_ndpsr" )
 [node name="Reload" type="AudioStreamPlayer3D" parent="ReloadSFX3D"]
 stream = ExtResource( "4_r7ecp" )
 max_distance = 20.0
+bus = &"SFX"
+
+[node name="AmmoSFX" type="Node" parent="."]
+script = ExtResource( "2_ndpsr" )
+
+[node name="Ammo" type="AudioStreamPlayer" parent="AmmoSFX"]
+stream = ExtResource( "4_fst4g" )
+volume_db = -16.0
+bus = &"SFX"
+
+[node name="AmmoSFX3D" type="Node3D" parent="."]
+script = ExtResource( "2_ndpsr" )
+
+[node name="PickupSFX" type="AudioStreamPlayer3D" parent="AmmoSFX3D"]
+stream = ExtResource( "4_fst4g" )
+unit_db = -16.0
+unit_size = 25.0
+max_db = -1.0
+bus = &"SFX"
 
 [connection signal="timeout" from="CanShoot" to="." method="_can_shoot"]

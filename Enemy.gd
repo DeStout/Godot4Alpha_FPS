@@ -26,7 +26,7 @@ var find_time := 3.0
 var slapper_preferred_dist := [1.0, 3.0]
 var pistol_preferred_dist := [10.0, 15.0]
 var rifle_preferred_dist := [15.0, 22.5]
-var preferred_distance : Array
+var preferred_distance : Array = slapper_preferred_dist
 
 # Weapons
 var weapon_transforms = load("res://WeaponTransforms.gd")
@@ -45,12 +45,13 @@ var is_reloading := false
 @onready var camera : Camera3D = $Head/ViewHelper/Camera3D
 var default_color : Color
 var health : int = 100
+
+# SFX
 @onready var hurt_sfx := $HurtSFX
-@onready var slap_sfx := $SlapSFX
 @onready var death_sfx := $DeathSFX
 
 
-func _ready():
+func _ready() -> void:
 	behavior = "Normal"
 	behavior_tree = behavior_tree.new()
 	weapon_transforms = weapon_transforms.new()
@@ -65,12 +66,7 @@ func _ready():
 	_switch_weapon(slapper)
 
 
-#func _process(delta):
-#	if !find_timer.is_stopped():
-#		print(find_timer.time_left)
-
-
-func _physics_process(delta):
+func _physics_process(delta) -> void:
 	match goal[0]:
 		"Wander":
 			if player_seen:
@@ -178,13 +174,13 @@ func _physics_process(delta):
 		container.remove_enemy(self)
 
 
-func _target_reached():
+func _target_reached() -> void:
 #	print(str(name) + ": Target Reached -> " + str(goal[1][1].name))
 	if goal[1][1] != WeaponPickup or goal[1][1] != Ammo:
 		switch_goal()
 
 
-func switch_goal():
+func switch_goal() -> void:
 	goal = behavior_tree.new_behavior(self)
 	debug_label.text = str(name) + ": " + goal[0] + " -> " + str(goal[1][1].name)
 	nav_agent.set_target_location(goal[1][1].global_transform.origin)
@@ -252,7 +248,7 @@ func _slap() -> void:
 				if target.get_parent().has_method("is_shot"):
 					parent = target.get_parent()
 					if parent != self:
-						slap_sfx.play_rand()
+						$Slap.play()
 						parent.is_shot(equipped.base_damage, 1, self)
 
 
@@ -268,6 +264,7 @@ func pickup_weapon(weapon : int, pickup : WeaponPickup, picked_up : Callable) ->
 				pistol.position = weapon_transforms.PISTOL_POSITION
 				pistol.rotation = weapon_transforms.PISTOL_ROTATION
 				$Head/ViewHelper.add_child(instance)
+				pistol.play_sfx("Pickup", true)
 				_switch_weapon(pistol)
 				picked_up.call()
 			1:
@@ -278,6 +275,7 @@ func pickup_weapon(weapon : int, pickup : WeaponPickup, picked_up : Callable) ->
 				rifle.position = weapon_transforms.RIFLE_POSITION
 				rifle.rotation = weapon_transforms.RIFLE_ROTATION
 				$Head/ViewHelper.add_child(instance)
+				rifle.play_sfx("Pickup", true)
 				_switch_weapon(rifle)
 				picked_up.call()
 	switch_goal()
@@ -309,12 +307,12 @@ func add_ammo(amount : int, ammo_for : int, picked_up : Callable) -> void:
 	match ammo_for:
 		0:
 			if pistol != null:
-				pistol.add_ammo(amount, picked_up)
+				pistol.add_ammo(amount, picked_up, self)
 				if equipped != pistol:
 					_switch_weapon(pistol)
 		1:
 			if rifle != null:
-				rifle.add_ammo(amount, picked_up)
+				rifle.add_ammo(amount, picked_up, self)
 				if equipped != rifle:
 					_switch_weapon(rifle)
 

@@ -60,6 +60,9 @@ __meta__ = {
 "_edit_vertical_guides_": [768.0]
 }
 
+[node name="NavAgent" type="NavigationAgent3D" parent="."]
+agent_height_offset = 0.1
+
 [node name="PlayerSeen" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
 visible = false
@@ -69,6 +72,10 @@ collide_with_areas = true
 
 [node name="VectorCube" parent="PlayerSeen" instance=ExtResource( "2_mlfi0" )]
 visible = false
+
+[node name="FindTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
 
 [node name="Head" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
@@ -140,10 +147,15 @@ shape = SubResource( "SphereShape3D_vrlk2" )
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.625, 0)
 shape = SubResource( "CapsuleShape3D_4e5ow" )
 
+[node name="Slap" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( "7_gwkte" )
+volume_db = 6.0
+bus = &"SFX"
+
 [node name="HurtTimer" type="Timer" parent="."]
 one_shot = true
 
-[node name="HurtSFX" type="Node" parent="."]
+[node name="HurtSFX" type="Node3D" parent="."]
 script = ExtResource( "4_fow25" )
 
 [node name="Hurt1" type="AudioStreamPlayer3D" parent="HurtSFX"]
@@ -151,35 +163,25 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 stream = ExtResource( "5_nudx1" )
 max_db = 0.0
 max_distance = 20.0
+bus = &"SFX"
 
 [node name="Hurt2" type="AudioStreamPlayer3D" parent="HurtSFX"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 stream = ExtResource( "6_4a5j5" )
 max_db = 0.0
 max_distance = 20.0
+bus = &"SFX"
 
-[node name="SlapSFX" type="Node" parent="."]
-script = ExtResource( "4_fow25" )
-
-[node name="Slap1" type="AudioStreamPlayer" parent="SlapSFX"]
-stream = ExtResource( "7_gwkte" )
-volume_db = 6.0
-
-[node name="DeathSFX" type="Node" parent="."]
+[node name="DeathSFX" type="Node3D" parent="."]
 script = ExtResource( "4_fow25" )
 
 [node name="Death1" type="AudioStreamPlayer3D" parent="DeathSFX"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 stream = ExtResource( "8_sdjxy" )
 max_db = 0.0
 max_distance = 20.0
+bus = &"SFX"
 
-[node name="NavAgent" type="NavigationAgent3D" parent="."]
-agent_height_offset = 0.1
-
-[node name="FindTimer" type="Timer" parent="."]
-wait_time = 3.0
-one_shot = true
-
-[connection signal="slap" from="Head/ViewHelper/Slapper" to="." method="_slap"]
 [connection signal="target_reached" from="NavAgent" to="." method="_target_reached"]
 [connection signal="timeout" from="FindTimer" to="." method="switch_goal"]
+[connection signal="slap" from="Head/ViewHelper/Slapper" to="." method="_slap"]

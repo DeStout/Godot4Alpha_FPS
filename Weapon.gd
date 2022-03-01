@@ -10,10 +10,14 @@ class_name Weapon
 @export var consec_shots := 4.0
 @export var base_damage = 10.0
 
+@onready var pickup_sfx := $PickupSFX
+@onready var pickup_sfx_3d := $PickupSFX3D
 @onready var shoot_sfx := $ShootSFX
 @onready var shoot_sfx_3d := $ShootSFX3D
 @onready var reload_sfx := $ReloadSFX
 @onready var reload_sfx_3d := $ReloadSFX3D
+@onready var ammo_sfx := $AmmoSFX
+@onready var ammo_sfx_3d := $AmmoSFX3D
 var current_sfx = null
 
 signal slap
@@ -60,8 +64,14 @@ func play(animation : String, reverse : bool = true) -> void:
 	await $AnimationPlayer.animation_finished
 
 
-func play_sfx(sfx : String, play_3d : bool):
+func play_sfx(sfx : String, play_3d : bool) -> void:
 	match sfx:
+		"Pickup":
+			match play_3d:
+				true:
+					current_sfx = pickup_sfx_3d.play_rand()
+				false:
+					current_sfx = pickup_sfx.play_rand()
 		"Shoot":
 			match play_3d:
 				true:
@@ -74,6 +84,12 @@ func play_sfx(sfx : String, play_3d : bool):
 					current_sfx = reload_sfx_3d.play_rand()
 				false:
 					current_sfx = reload_sfx.play_rand()
+		"Ammo":
+			match play_3d:
+				true:
+					current_sfx = ammo_sfx_3d.play_rand()
+				false:
+					current_sfx = ammo_sfx.play_rand()
 
 
 func stop_sfx() -> void:
@@ -82,7 +98,8 @@ func stop_sfx() -> void:
 			current_sfx.stop()
 
 
-func add_ammo(amount : int, pick_up : Callable) -> void:
+func add_ammo(amount : int, pick_up : Callable, is_enemy : CharacterBody3D) -> void:
 	if total_ammo < max_ammo:
+		play_sfx("Ammo", is_enemy is Enemy)
 		pick_up.call()
 	total_ammo = clamp(total_ammo + amount, 0, max_ammo)

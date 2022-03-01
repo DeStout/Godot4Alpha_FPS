@@ -25,7 +25,7 @@ func _ready() -> void:
 			pickup = load(rifle_)
 
 
-func _process(delta):
+func _process(delta) -> void:
 	$Spinner.rotate_y(rotation_speed * delta)
 
 
@@ -38,7 +38,6 @@ func _body_entered(body) -> void:
 func _picked_up() -> void:
 	available = false
 	visible = false
-#	$Area3D/CollisionShape3D.set_deferred("disabled", true)
 	await get_tree().create_timer(respawn_time).timeout
 	_spawn()
 
@@ -46,4 +45,3 @@ func _picked_up() -> void:
 func _spawn() -> void:
 	available = true
 	visible = true
-#	$Area3D/CollisionShape3D.disabled = false

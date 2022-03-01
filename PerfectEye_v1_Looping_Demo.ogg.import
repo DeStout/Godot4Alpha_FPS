@@ -1,0 +1,16 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOGGVorbis"
+uid="uid://cseiawxqwcafv"
+path="res://.godot/imported/PerfectEye_v1_Looping_Demo.ogg-f3ebae1eaa387ffc276e1905c1591c35.oggvorbisstr"
+
+[deps]
+
+source_file="res://PerfectEye_v1_Looping_Demo.ogg"
+dest_files=["res://.godot/imported/PerfectEye_v1_Looping_Demo.ogg-f3ebae1eaa387ffc276e1905c1591c35.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,16 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOGGVorbis"
+uid="uid://ddnxsubfu5btr"
+path="res://.godot/imported/PistolShoot.ogg-8877168608e563d76175b0735daf1685.oggvorbisstr"
+
+[deps]
+
+source_file="res://PistolShoot.ogg"
+dest_files=["res://.godot/imported/PistolShoot.ogg-8877168608e563d76175b0735daf1685.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,0 +1,16 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOGGVorbis"
+uid="uid://ca5b4phw81h2w"
+path="res://.godot/imported/PickupWeapon.ogg-d496aecd0ff7f8171ed76a598b65426d.oggvorbisstr"
+
+[deps]
+
+source_file="res://PickupWeapon.ogg"
+dest_files=["res://.godot/imported/PickupWeapon.ogg-d496aecd0ff7f8171ed76a598b65426d.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
