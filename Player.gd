@@ -288,7 +288,8 @@ func is_shot(damage : int, shape_id : int, shooter : Enemy) -> void:
 	if $DamageCollision.shape_owner_get_owner(shape_id) == $DamageCollision/HeadCollision:
 		damage *= 1.5
 	
-	health -= damage
+	if !Debug.player_invincible:
+		health -= damage
 	health = max(health, 0)
 	_show_damage()
 	_update_HUD()

@@ -2,6 +2,7 @@ extends Control
 
 
 var is_visible := true
+
 var fps_visible := true
 var enemy_behavior_visible := false
 
@@ -15,6 +16,7 @@ var mute_sfx := false
 var mute_setting := Mute.MUSIC
 
 var player : Player
+var player_invincible := false
 
 
 func _ready() -> void:

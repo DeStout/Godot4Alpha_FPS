@@ -36,10 +36,14 @@ var weapon_transforms = load("res://WeaponTransforms.gd")
 var equipped : Node3D
 
 # Shooting variables
+@export var max_consec_shots := 6
+@export var shoot_wait_time := 1.0
 @onready var shoot_cast : RayCast3D = $Head/ShootCast
 var container : Node3D
 var is_shooting := false
 var is_reloading := false
+var consectutive_shots := 0
+
 
 # Misc
 @onready var camera : Camera3D = $Head/ViewHelper/Camera3D
@@ -70,6 +74,7 @@ func _ready() -> void:
 func _physics_process(delta) -> void:
 	match goal[0]:
 		"Wander":
+			is_shooting = false
 			if player_seen:
 				if equipped == slapper and \
 			global_transform.origin.distance_to(player.global_transform.origin) < preferred_distance[1]:
@@ -77,13 +82,16 @@ func _physics_process(delta) -> void:
 				elif equipped != slapper:
 					switch_goal()
 		"FindPlayer":
+			is_shooting = false
 			nav_agent.set_target_location(player.global_transform.origin)
 			if player_seen:
 				switch_goal()
 		"FindWeapon":
+			is_shooting = false
 			if player_seen:
 				switch_goal()
 		"FindAmmo":
+			is_shooting = false
 			if equipped.total_ammo >= equipped.mag_size:
 				switch_goal()
 		"Attack":
@@ -96,11 +104,13 @@ func _physics_process(delta) -> void:
 			
 			if !player_seen or nav_agent.distance_to_target() > preferred_distance[1]:
 				is_shooting = false
+				consectutive_shots = 0
 				_reload()
 				switch_goal()
 			else:
 				if equipped.total_ammo == 0 and equipped != slapper:
 					is_shooting = false
+					consectutive_shots = 0
 					if pistol != null and pistol.total_ammo > 0:
 						_switch_weapon(pistol)
 					elif rifle != null and rifle.total_ammo > 0:
@@ -110,7 +120,11 @@ func _physics_process(delta) -> void:
 					switch_goal()
 				elif equipped.ammo_in_mag == 0 and equipped != slapper:
 					is_shooting = false
+					consectutive_shots = 0
 					_reload()
+				elif !$ShootTimer.is_stopped():
+					is_shooting = false
+					consectutive_shots = 0
 				else:
 					is_shooting = true
 	
@@ -144,6 +158,7 @@ func _physics_process(delta) -> void:
 	
 	if is_equal_approx(abs(rad2deg($Head.rotation.y)), 80):
 		is_shooting = false
+		consectutive_shots = 0
 	
 	# Move torwards goal
 	var floor_normal : Vector3
@@ -209,8 +224,8 @@ func player_is_seen() -> void:
 func _shoot() -> void:
 	is_reloading = false
 	equipped.shoot(self)
-	
 	equipped.play("Shoot", false)
+	_recoil()
 	
 	# Create bullet trail
 	if equipped.max_ammo > 0:
@@ -230,9 +245,26 @@ func _shoot() -> void:
 				container.create_bullet_hole(collision_point, collision_normal)
 	else:
 		await equipped.slap
-	
+		
+	consectutive_shots += 1
+	if consectutive_shots == max_consec_shots:
+		$ShootTimer.start(shoot_wait_time)
 	if !equipped.is_automatic or equipped.ammo_in_mag == 0:
 		is_shooting = false
+
+
+func _recoil() -> void:
+	var recoil_scale : float = 0
+	if equipped == pistol:
+		recoil_scale = 50.0
+	elif equipped == rifle:
+		recoil_scale = 10.0
+	var recoil : float = recoil_scale * (0.75 + ((0.25 * consectutive_shots) / equipped.consec_shots))
+	var v_recoil := randf_range(-equipped.v_recoil, equipped.v_recoil) * recoil_scale
+	var h_recoil := randf_range(-equipped.h_recoil, equipped.h_recoil) * recoil_scale
+	$Head.rotate_x(v_recoil)
+	$Head.rotate_y(h_recoil)
+	$Head.rotation.z = 0
 
 
 func _reload() -> void:

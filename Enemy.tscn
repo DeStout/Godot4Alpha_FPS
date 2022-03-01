@@ -125,6 +125,9 @@ monitorable = false
 transform = Transform3D(1, 0, 0, 0, 1, 1.49011e-08, 0, -1.49011e-08, 1, 0, -1.19209e-07, -0.674995)
 shape = SubResource( "SphereShape3D_ngx6b" )
 
+[node name="ShootTimer" type="Timer" parent="."]
+one_shot = true
+
 [node name="Body" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.625, 0)
 mesh = SubResource( "CapsuleMesh_nlv8a" )

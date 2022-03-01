@@ -100,7 +100,7 @@ mag_size = 0
 rps = 1.333
 v_recoil = 0.0
 h_recoil = 0.0
-consec_shots = 0.0
+consec_shots = 1.0
 base_damage = 50.0
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
