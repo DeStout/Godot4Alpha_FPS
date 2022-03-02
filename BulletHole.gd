@@ -9,6 +9,6 @@ func project_to(surf_norm : Vector3):
 	
 	var bitangent : Vector3 = surf_norm.cross(tangent)
 	tangent = surf_norm.cross(bitangent)
-	basis.y = surf_norm
-	basis.z = bitangent
-	basis.x = tangent
+	global_transform.basis.y = surf_norm
+	global_transform.basis.z = bitangent
+	global_transform.basis.x = tangent

@@ -36,7 +36,6 @@ script = ExtResource( "2_ctt1n" )
 spawns_ = NodePath("../Spawns")
 pickups_ = NodePath("../Pickups")
 nav_points_ = NodePath("../NavPoints")
-num_enemies = 3
 
 [node name="FX" type="Node3D" parent="PlayersContainer"]
 

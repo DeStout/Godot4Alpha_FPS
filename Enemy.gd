@@ -36,7 +36,7 @@ var weapon_transforms = load("res://WeaponTransforms.gd")
 var equipped : Node3D
 
 # Shooting variables
-@export var max_consec_shots := 6
+@export var consec_shots_range := [3, 8]
 @export var shoot_wait_time := 1.0
 @onready var shoot_cast : RayCast3D = $Head/ShootCast
 var container : Node3D
@@ -247,7 +247,7 @@ func _shoot() -> void:
 		await equipped.slap
 		
 	consectutive_shots += 1
-	if consectutive_shots == max_consec_shots:
+	if consectutive_shots >= randi_range(consec_shots_range[0], consec_shots_range[1]):
 		$ShootTimer.start(shoot_wait_time)
 	if !equipped.is_automatic or equipped.ammo_in_mag == 0:
 		is_shooting = false

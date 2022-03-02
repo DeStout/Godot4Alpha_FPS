@@ -115,3 +115,4 @@ func create_bullet_hole(collision_point : Vector3, collision_normal : Vector3) -
 	$FX.add_child(bullet_hole)
 	bullet_hole.position = collision_point
 	bullet_hole.project_to(collision_normal)
+	bullet_hole.global_rotate(bullet_hole.basis.y, randf_range(-PI, PI))
