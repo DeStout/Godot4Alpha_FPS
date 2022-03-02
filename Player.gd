@@ -203,7 +203,12 @@ func _reload() -> void:
 
 func _update_HUD() -> void:
 	$CameraHelper/Recoil/Camera/HUD/Health.text = str(health)
-	$CameraHelper/Recoil/Camera/HUD/Armor.text = str(armor)
+	if armor > 0:
+		$CameraHelper/Recoil/Camera/HUD/Armor.show()
+		$CameraHelper/Recoil/Camera/HUD/Armor.text = str(armor)
+	else:
+		$CameraHelper/Recoil/Camera/HUD/Armor.hide()
+		
 	$CameraHelper/Recoil/Camera/HUD/Mag.text = str(equipped.ammo_in_mag) + "/" + \
 										str(equipped.mag_size)
 	$CameraHelper/Recoil/Camera/HUD/TotalAmmo.text = str(equipped.total_ammo)

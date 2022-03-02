@@ -5,7 +5,7 @@ extends Node3D
 @export_node_path(Node3D) var pickups_
 @export_node_path(Node3D) var nav_points_
 @export var respawn_time := 5.0
-@export_range(0,15) var num_enemies := 7
+@export_range(0,64) var num_enemies := 7
 
 var spawns : Node3D
 var pickups : Node3D

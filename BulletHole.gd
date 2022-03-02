@@ -1,5 +1,17 @@
 extends Decal
 
+var start_alpha := 1.0
+var linger_time := 120.0
+var fade_out_time := 5.0
+var fade_time := 0.0
+
+func _process(delta) -> void:
+	fade_time += delta
+	if fade_time >= linger_time:
+		modulate.a = start_alpha - (start_alpha * ((fade_time - linger_time)/ fade_out_time))
+	if modulate.a <= 0:
+		queue_free()
+
 func project_to(surf_norm : Vector3):
 	var tangent : Vector3
 	if surf_norm.abs().is_equal_approx(Vector3.UP):
