@@ -30,7 +30,9 @@ const JUMP_VELOCITY := 4.0
 @onready var death_sfx := $DeathSFX
 
 const MAX_HEALTH := 200
-var health := 200
+const MAX_ARMOR := 50
+var health := 100
+var armor := 0
 var damage_tween : Tween
 
 
@@ -201,6 +203,7 @@ func _reload() -> void:
 
 func _update_HUD() -> void:
 	$CameraHelper/Recoil/Camera/HUD/Health.text = str(health)
+	$CameraHelper/Recoil/Camera/HUD/Armor.text = str(armor)
 	$CameraHelper/Recoil/Camera/HUD/Mag.text = str(equipped.ammo_in_mag) + "/" + \
 										str(equipped.mag_size)
 	$CameraHelper/Recoil/Camera/HUD/TotalAmmo.text = str(equipped.total_ammo)
@@ -281,6 +284,15 @@ func add_health(amount : int, picked_up : Callable) -> void:
 		_update_HUD()
 
 
+func add_armor(amount : int, picked_up : Callable) -> void:
+	if armor < MAX_ARMOR:
+		armor += amount
+		health_sfx.play("Armor")
+		armor = min(MAX_ARMOR, armor)
+		picked_up.call()
+		_update_HUD()
+
+
 func is_shot(damage : int, shape_id : int, shooter : Enemy) -> void:
 	if $HurtTimer.is_stopped():
 		hurt_sfx.play_rand()
@@ -289,6 +301,13 @@ func is_shot(damage : int, shape_id : int, shooter : Enemy) -> void:
 		damage *= 1.5
 	
 	if !Debug.player_invincible:
+		if armor > 0:
+			if armor > damage / 2:
+				damage /= 2
+				armor -= damage
+			else:
+				damage -= armor
+				armor = 0
 		health -= damage
 	health = max(health, 0)
 	_show_damage()

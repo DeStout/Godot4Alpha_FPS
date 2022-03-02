@@ -124,6 +124,26 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.615686, 0, 0, 1)
 theme_override_font_sizes/font_size = 72
 text = "200"
+horizontal_alignment = 2
+__meta__ = {
+"_edit_layout_mode": 1,
+"_edit_use_custom_anchors": false
+}
+
+[node name="Armor" type="Label" parent="CameraHelper/Recoil/Camera/HUD"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 26.0
+offset_top = 92.0
+offset_right = -1369.0
+offset_bottom = -736.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0.615686, 1)
+theme_override_font_sizes/font_size = 50
+text = "0
+"
+horizontal_alignment = 2
 __meta__ = {
 "_edit_layout_mode": 1,
 "_edit_use_custom_anchors": false
@@ -220,7 +240,13 @@ script = ExtResource( "4_4ee2t" )
 [node name="Health" type="AudioStreamPlayer" parent="HealthSFX"]
 stream = ExtResource( "8_x64hr" )
 volume_db = -10.0
-pitch_scale = 1.52
+pitch_scale = 2.0
+bus = &"SFX"
+
+[node name="Armor" type="AudioStreamPlayer" parent="HealthSFX"]
+stream = ExtResource( "8_x64hr" )
+volume_db = -10.0
+pitch_scale = 0.91
 bus = &"SFX"
 
 [node name="Slap" type="AudioStreamPlayer" parent="."]
