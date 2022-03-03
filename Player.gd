@@ -109,6 +109,9 @@ func _input(event) -> void:
 		elif event.is_action_pressed("Weapon3"):
 			if rifle != null and !is_shooting:
 				_switch_weapon(rifle)
+		
+		if event.is_action_pressed("Drop"):
+			_drop_weapon()
 
 
 func _shoot() -> void:
@@ -225,14 +228,13 @@ func _show_damage() -> void:
 							"modulate", Color.TRANSPARENT, 0.5).set_delay(0.5)
 
 
-func pickup_weapon(weapon : int, pickup : WeaponPickup, picked_up : Callable) -> void:
+func pickup_weapon(weapon : int, pickup : WeaponPickup, kill_pickup : Callable) -> bool:
 	if pickup.available:
 		var instance = pickup.pickup.instantiate()
 		match weapon:
 			0:
 				if pistol != null:
-					add_ammo(instance.mag_size, weapon, picked_up)
-					return
+					return add_ammo(instance.mag_size, weapon, kill_pickup)
 				pistol = instance
 				pistol.position = weapon_transforms.PISTOL_POSITION
 				pistol.rotation = weapon_transforms.PISTOL_ROTATION
@@ -241,15 +243,16 @@ func pickup_weapon(weapon : int, pickup : WeaponPickup, picked_up : Callable) ->
 				_switch_weapon(pistol)
 			1:
 				if rifle != null:
-					add_ammo(instance.mag_size, weapon, picked_up)
-					return
+					return add_ammo(instance.mag_size, weapon, kill_pickup)
 				rifle = instance
 				rifle.position = weapon_transforms.RIFLE_POSITION
 				rifle.rotation = weapon_transforms.RIFLE_ROTATION
 				$CameraHelper/Recoil.add_child(instance)
 				rifle.play_sfx("Pickup", false)
 				_switch_weapon(rifle)
-		picked_up.call()
+		kill_pickup.call()
+		return true
+	return false
 
 
 func _switch_weapon(weapon) -> void:
@@ -269,15 +272,21 @@ func _switch_weapon(weapon) -> void:
 		_update_HUD()
 
 
-func add_ammo(amount : int, ammo_for : int, picked_up : Callable) -> void:
+func _drop_weapon() -> void:
+	pass
+
+
+func add_ammo(amount : int, ammo_for : int, kill_pickup : Callable) -> bool:
+	var picked_up : bool
 	match ammo_for:
 		0:
 			if pistol != null:
-				pistol.add_ammo(amount, picked_up, self)
+				picked_up = pistol.add_ammo(amount, kill_pickup, self)
 		1:
 			if rifle != null:
-				rifle.add_ammo(amount, picked_up, self)
+				picked_up = rifle.add_ammo(amount, kill_pickup, self)
 	_update_HUD()
+	return picked_up
 
 
 func add_health(amount : int, picked_up : Callable) -> void:

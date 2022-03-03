@@ -12,11 +12,13 @@ const TURN_SPEED := 4.0
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 # Navigation variables
-@export_enum("Normal", "Aggressive", "Slapper", "Scared") var behavior
+enum BEHAVIORS{NORMAL, AGGRESSIVE, SLAPPER, SCARED}
+enum GOALS{FINDPLAYER, FINDWEAPON, FINDAMMO, ATTACK, WANDER, FLEE}
+var behavior_tree = load("res://EnemyBehaviorTree.gd")
+var behavior : int
+var goal : Array
 @onready var nav_agent : NavigationAgent3D = $NavAgent
 @onready var player_cast : RayCast3D = $PlayerSeen
-var behavior_tree = load("res://EnemyBehaviorTree.gd")
-var goal : Array
 var pickups : Node3D
 var nav_points : Node3D
 var player : CharacterBody3D = null
@@ -36,8 +38,8 @@ var weapon_transforms = load("res://WeaponTransforms.gd")
 var equipped : Node3D
 
 # Shooting variables
-@export var consec_shots_range := [3, 8]
-@export var shoot_wait_time := 1.0
+var consec_shots_range := [3, 8]
+var shoot_wait_time := 1.0
 @onready var shoot_cast : RayCast3D = $Head/ShootCast
 var container : Node3D
 var is_shooting := false
@@ -57,7 +59,7 @@ var health : int = 100
 
 
 func _ready() -> void:
-	behavior = "Normal"
+	behavior = BEHAVIORS.NORMAL
 	behavior_tree = behavior_tree.new()
 	weapon_transforms = weapon_transforms.new()
 	
@@ -73,7 +75,7 @@ func _ready() -> void:
 
 func _physics_process(delta) -> void:
 	match goal[0]:
-		"Wander":
+		GOALS.WANDER:
 			is_shooting = false
 			if player_seen:
 				if equipped == slapper and \
@@ -81,20 +83,20 @@ func _physics_process(delta) -> void:
 					switch_goal()
 				elif equipped != slapper:
 					switch_goal()
-		"FindPlayer":
+		GOALS.FINDPLAYER:
 			is_shooting = false
 			nav_agent.set_target_location(player.global_transform.origin)
 			if player_seen:
 				switch_goal()
-		"FindWeapon":
+		GOALS.FINDWEAPON:
 			is_shooting = false
 			if player_seen:
 				switch_goal()
-		"FindAmmo":
+		GOALS.FINDAMMO:
 			is_shooting = false
 			if equipped.total_ammo >= equipped.mag_size:
 				switch_goal()
-		"Attack":
+		GOALS.ATTACK:
 			var nav_point : Vector3 = global_transform.origin.direction_to(player.global_transform.origin)
 			nav_point *= preferred_distance[0]
 			nav_agent.set_target_location(to_global(nav_point))
@@ -134,7 +136,7 @@ func _physics_process(delta) -> void:
 	
 	# Turn body towards target
 	var new_transform : Transform3D
-	if goal[0] == "Attack":
+	if goal[0] == GOALS.ATTACK:
 		var player_target : Vector3 = player.global_transform.origin
 		player_target.y = position.y
 		new_transform = transform.looking_at(player_target)
@@ -143,7 +145,7 @@ func _physics_process(delta) -> void:
 	transform = transform.sphere_interpolate_with(new_transform, TURN_SPEED * delta)
 	
 	# Look at Player
-	if goal[0] == "FindPlayer" or goal[0] == "Attack":
+	if goal[0] == GOALS.FINDPLAYER or goal[0] == GOALS.ATTACK:
 		var head_trans : Transform3D = $Head.global_transform
 		var look_at : Transform3D = head_trans.looking_at \
 						(player.global_transform.origin+Vector3(0, 1.4, 0))
@@ -204,7 +206,7 @@ func _target_reached() -> void:
 
 func switch_goal() -> void:
 	goal = behavior_tree.new_behavior(self)
-	debug_label.text = str(name) + ": " + goal[0] + " -> " + str(goal[1][1].name)
+	debug_label.text = str(name) + ": " + str(goal[0]) + " -> " + str(goal[1][1].name)
 	nav_agent.set_target_location(goal[1][1].global_transform.origin)
 
 
@@ -291,13 +293,14 @@ func _slap() -> void:
 						parent.is_shot(equipped.base_damage, 1, self)
 
 
-func pickup_weapon(weapon : int, pickup : WeaponPickup, picked_up : Callable) -> void:
+func pickup_weapon(weapon : int, pickup : WeaponPickup, kill_pickup : Callable) -> bool:
+	var picked_up := false
 	if pickup.available:
 		var instance = pickup.pickup.instantiate()
 		match weapon:
 			0:
 				if pistol != null:
-					add_ammo(instance.mag_size, weapon, picked_up)
+					picked_up = add_ammo(instance.mag_size, weapon, kill_pickup)
 					continue
 				pistol = instance
 				pistol.position = weapon_transforms.PISTOL_POSITION
@@ -305,10 +308,11 @@ func pickup_weapon(weapon : int, pickup : WeaponPickup, picked_up : Callable) ->
 				$Head/ViewHelper.add_child(instance)
 				pistol.play_sfx("Pickup", true)
 				_switch_weapon(pistol)
-				picked_up.call()
+				kill_pickup.call()
+				picked_up = true
 			1:
 				if rifle != null:
-					add_ammo(instance.mag_size, weapon, picked_up)
+					picked_up = add_ammo(instance.mag_size, weapon, kill_pickup)
 					continue
 				rifle = instance
 				rifle.position = weapon_transforms.RIFLE_POSITION
@@ -316,8 +320,10 @@ func pickup_weapon(weapon : int, pickup : WeaponPickup, picked_up : Callable) ->
 				$Head/ViewHelper.add_child(instance)
 				rifle.play_sfx("Pickup", true)
 				_switch_weapon(rifle)
-				picked_up.call()
+				kill_pickup.call()
+				picked_up = true
 	switch_goal()
+	return picked_up
 
 
 func _switch_weapon(weapon) -> void:
@@ -342,18 +348,20 @@ func _switch_weapon(weapon) -> void:
 			preferred_distance = rifle_preferred_dist
 
 
-func add_ammo(amount : int, ammo_for : int, picked_up : Callable) -> void:
+func add_ammo(amount : int, ammo_for : int, kill_pickup : Callable) -> bool:
+	var picked_up := false
 	match ammo_for:
 		0:
 			if pistol != null:
-				pistol.add_ammo(amount, picked_up, self)
+				picked_up = pistol.add_ammo(amount, kill_pickup, self)
 				if equipped != pistol:
 					_switch_weapon(pistol)
 		1:
 			if rifle != null:
-				rifle.add_ammo(amount, picked_up, self)
+				picked_up = rifle.add_ammo(amount, kill_pickup, self)
 				if equipped != rifle:
 					_switch_weapon(rifle)
+	return picked_up
 
 
 func is_shot(damage : int, shape_id : int, enemy : CharacterBody3D) -> void:

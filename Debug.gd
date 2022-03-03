@@ -4,12 +4,10 @@ extends Control
 var is_visible := true
 
 var fps_visible := true
-var enemy_behavior_visible := false
+var enemy_behavior_visible := true
 
 enum Mute{NONE, MUSIC, SFX, ALL}
 var mute_visible := true
-var mute_all := false
-var mute_sfx := false
 @onready var master_bus := AudioServer.get_bus_index("Master")
 @onready var sfx_bus := AudioServer.get_bus_index("SFX")
 @onready var music_bus := AudioServer.get_bus_index("Music")

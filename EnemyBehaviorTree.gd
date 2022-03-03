@@ -1,23 +1,24 @@
 extends Node
 
 
-var goals = ["FindPlayer", "FindWeapon", "FindAmmo", "Attack", "Wander", "Flee"]
+enum BEHAVIORS{NORMAL, AGGRESSIVE, SLAPPER, SCARED}
+enum GOALS{FINDPLAYER, FINDWEAPON, FINDAMMO, ATTACK, WANDER, FLEE}
 var enemy : CharacterBody3D
 
 
 func new_behavior(new_enemy : CharacterBody3D) -> Array:
 	enemy = new_enemy
 	match enemy.behavior:
-		"Normal":
+		BEHAVIORS.NORMAL:
 			return _normal_behavior()
-		"Aggresssive":
+		BEHAVIORS.AGGRESSIVE:
 			pass
-		"Slapper":
+		BEHAVIORS.SLAPPER:
 			pass
-		"Scared":
+		BEHAVIORS.SCARED:
 			pass
 			
-	return ["Wander", _get_nav_point()]
+	return [GOALS.WANDER, _get_nav_point()]
 
 
 func _normal_behavior() -> Array:
@@ -40,21 +41,21 @@ func _normal_behavior() -> Array:
 			if has_pistol or has_rifle:
 				if nearest_pistol_ammo[0] < nearest_rifle_ammo[0]:
 					if has_pistol:
-						return ["FindAmmo", nearest_pistol_ammo]
+						return [GOALS.FINDAMMO, nearest_pistol_ammo]
 				else:
 					if has_rifle:
-						return ["FindAmmo", nearest_rifle_ammo]
+						return [GOALS.FINDAMMO, nearest_rifle_ammo]
 					else:
-						return ["FindAmmo", nearest_pistol_ammo]
+						return [GOALS.FINDAMMO, nearest_pistol_ammo]
 						
 			elif nearest_weapon[0] != null:
-				return ["FindWeapon", nearest_weapon]
+				return [GOALS.FINDWEAPON, nearest_weapon]
 			else:
-				return ["Wander", _get_nav_point()]
+				return [GOALS.WANDER, _get_nav_point()]
 		elif player_dist > enemy.slapper_preferred_dist[0]:
-			return ["FindPlayer", [player_dist, enemy.player]]
+			return [GOALS.FINDPLAYER, [player_dist, enemy.player]]
 		else:
-			return ["Attack", [player_dist, enemy.player]]
+			return [GOALS.ATTACK, [player_dist, enemy.player]]
 			
 	# If the enemy has a Pistol equipped wander until the player is seen. If the
 	# player is beyond the preferred shooting distance attempt to follow until in
@@ -63,37 +64,37 @@ func _normal_behavior() -> Array:
 		if player_seen:
 			enemy.find_timer.stop()
 			if player_dist < enemy.pistol_preferred_dist[1]:
-				return ["Attack", [player_dist, enemy.player]]
+				return [GOALS.ATTACK, [player_dist, enemy.player]]
 			else:
 				enemy.find_timer.start(enemy.find_time)
-				return ["FindPlayer", [player_dist, enemy.player]]
+				return [GOALS.FINDPLAYER, [player_dist, enemy.player]]
 		elif enemy.equipped.total_ammo < enemy.equipped.mag_size:
-			return ["FindAmmo", nearest_pistol_ammo]
+			return [GOALS.FINDAMMO, nearest_pistol_ammo]
 		elif enemy.player != null:
-			if enemy.goal[0] == "Attack":
+			if enemy.goal[0] == GOALS.ATTACK:
 				enemy.find_timer.start(enemy.find_time)
-				return ["FindPlayer", [player_dist, enemy.player]]
-			elif enemy.goal[0] == "FindPlayer":
-				return ["Wander", _get_nav_point()]
+				return [GOALS.FINDPLAYER, [player_dist, enemy.player]]
+			elif enemy.goal[0] == GOALS.FINDPLAYER:
+				return [GOALS.WANDER, _get_nav_point()]
 				
 	elif enemy.equipped == enemy.rifle:
 		if player_seen:
 			enemy.find_timer.stop()
 			if player_dist < enemy.rifle_preferred_dist[1]:
-				return ["Attack", [player_dist, enemy.player]]
+				return [GOALS.ATTACK, [player_dist, enemy.player]]
 			else:
 				enemy.find_timer.start(enemy.find_time)
-				return ["FindPlayer", [player_dist, enemy.player]]
+				return [GOALS.FINDPLAYER, [player_dist, enemy.player]]
 		elif enemy.equipped.total_ammo < enemy.equipped.mag_size:
-			return ["FindAmmo", nearest_rifle_ammo]
+			return [GOALS.FINDAMMO, nearest_rifle_ammo]
 		elif enemy.player != null:
-			if enemy.goal[0] == "Attack":
+			if enemy.goal[0] == GOALS.ATTACK:
 				enemy.find_timer.start(enemy.find_time)
-				return ["FindPlayer", [player_dist, enemy.player]]
-			elif enemy.goal[0] == "FindPlayer":
-				return ["Wander", _get_nav_point()]
+				return [GOALS.FINDPLAYER, [player_dist, enemy.player]]
+			elif enemy.goal[0] == GOALS.FINDPLAYER:
+				return [GOALS.WANDER, _get_nav_point()]
 		
-	return ["Wander", _get_nav_point()]
+	return [GOALS.WANDER, _get_nav_point()]
 
 
 func _player_distance() -> float:

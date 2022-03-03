@@ -98,8 +98,10 @@ func stop_sfx() -> void:
 			current_sfx.stop()
 
 
-func add_ammo(amount : int, pick_up : Callable, is_enemy : CharacterBody3D) -> void:
+func add_ammo(amount : int, pick_up : Callable, is_enemy : CharacterBody3D) -> bool:
 	if total_ammo < max_ammo:
 		play_sfx("Ammo", is_enemy is Enemy)
 		pick_up.call()
-	total_ammo = clamp(total_ammo + amount, 0, max_ammo)
+		total_ammo = clamp(total_ammo + amount, 0, max_ammo)
+		return true
+	return false

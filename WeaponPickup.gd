@@ -26,13 +26,25 @@ func _ready() -> void:
 
 
 func _process(delta) -> void:
+	if $Area3D.get_overlapping_bodies().size():
+		var body_index := 0
+		var picked_up : bool = _body_entered($Area3D.get_overlapping_bodies()[body_index])
+#		while(!picked_up):
+#			body_index += 1
+#			picked_up = _body_entered($Area3D.get_overlapping_bodies()[body_index])
+		
+		for body in $Area3D.get_overlapping_bodies():
+			if _body_entered(body):
+				break
+		
 	$Spinner.rotate_y(rotation_speed * delta)
 
 
-func _body_entered(body) -> void:
+func _body_entered(body) -> bool:
 	if body is CharacterBody3D:
 		if body.has_method("pickup_weapon"):
-			body.pickup_weapon(weapon, self, picked_up)
+			return body.pickup_weapon(weapon, self, picked_up)
+	return false
 
 
 func _picked_up() -> void:
