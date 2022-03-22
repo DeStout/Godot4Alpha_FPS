@@ -17,7 +17,10 @@ func new_behavior(new_enemy : CharacterBody3D) -> Array:
 			pass
 		BEHAVIORS.SCARED:
 			pass
-			
+	
+	
+#	if enemy.goal[0] == GOALS.WANDER:
+#		get_tree().paused = true
 	return [GOALS.WANDER, _get_nav_point()]
 
 
@@ -51,6 +54,9 @@ func _normal_behavior() -> Array:
 			elif nearest_weapon[0] != null:
 				return [GOALS.FINDWEAPON, nearest_weapon]
 			else:
+				
+#				if enemy.goal[0] == GOALS.WANDER:
+#					get_tree().paused = true
 				return [GOALS.WANDER, _get_nav_point()]
 		elif player_dist > enemy.slapper_preferred_dist[0]:
 			return [GOALS.FINDPLAYER, [player_dist, enemy.player]]
@@ -64,7 +70,7 @@ func _normal_behavior() -> Array:
 		if player_seen:
 			enemy.find_timer.stop()
 			if player_dist < enemy.pistol_preferred_dist[1]:
-				return [GOALS.ATTACK, [player_dist, enemy.player]]
+				return [GOALS.ATTACK, [player_dist, enemy.player]] 
 			else:
 				enemy.find_timer.start(enemy.find_time)
 				return [GOALS.FINDPLAYER, [player_dist, enemy.player]]
@@ -75,6 +81,8 @@ func _normal_behavior() -> Array:
 				enemy.find_timer.start(enemy.find_time)
 				return [GOALS.FINDPLAYER, [player_dist, enemy.player]]
 			elif enemy.goal[0] == GOALS.FINDPLAYER:
+#				if enemy.goal[0] == GOALS.WANDER:
+#					get_tree().paused = true
 				return [GOALS.WANDER, _get_nav_point()]
 				
 	elif enemy.equipped == enemy.rifle:
@@ -92,8 +100,12 @@ func _normal_behavior() -> Array:
 				enemy.find_timer.start(enemy.find_time)
 				return [GOALS.FINDPLAYER, [player_dist, enemy.player]]
 			elif enemy.goal[0] == GOALS.FINDPLAYER:
+#				if enemy.goal[0] == GOALS.WANDER:
+#					get_tree().paused = true
 				return [GOALS.WANDER, _get_nav_point()]
-		
+				
+#	if enemy.goal[0] == GOALS.WANDER:
+#		get_tree().paused = true
 	return [GOALS.WANDER, _get_nav_point()]
 
 

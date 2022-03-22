@@ -101,6 +101,10 @@ func remove_enemy(dead_enemy : CharacterBody3D) -> void:
 	enemies.append(enemy)
 
 
+func drop_weapon() -> void:
+	pass
+
+
 func create_shot_trail(shoot_from : Vector3, shoot_to: Vector3) -> void:
 	var shot_trail : Node3D = shot_trail_.instantiate()
 	var shot_trail_mesh : CylinderMesh = shot_trail.get_node("Mesh").mesh

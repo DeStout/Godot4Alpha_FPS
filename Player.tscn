@@ -1,8 +1,8 @@
-[gd_scene load_steps=22 format=3 uid="uid://nq620eyn5jk"]
+[gd_scene load_steps=22 format=3 uid="uid://bnsv6bpkbe7gm"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_s44i8"]
-[ext_resource type="Texture2D" uid="uid://bxrqfq3vy2tg" path="res://CrossHair.png" id="2_rtyu2"]
-[ext_resource type="Texture2D" uid="uid://ykrf1o6jswwe" path="res://D_Damage.png" id="3_c0u0s"]
+[ext_resource type="PackedScene" uid="uid://cy12nf62sv60i" path="res://VectorCube.tscn" id="2_mqeod"]
+[ext_resource type="Texture2D" uid="uid://bxrqfq3vy2tg" path="res://CrossHair.png" id="3_llduu"]
 [ext_resource type="Script" path="res://SFX.gd" id="4_4ee2t"]
 [ext_resource type="AudioStream" uid="uid://lgaf42ogngsv" path="res://Hurt1.ogg" id="5_gw5g3"]
 [ext_resource type="PackedScene" uid="uid://dcerb2l2eaj1d" path="res://Slapper.tscn" id="5_v2hn7"]
@@ -89,6 +89,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.47593, 0)
 [node name="Recoil" type="Node3D" parent="CameraHelper"]
 transform = Transform3D(1, 0, 0, 0, 0.988494, -0.151261, 0, 0.151261, 0.988494, 0, 0, 0)
 
+[node name="ShootCast" type="RayCast3D" parent="CameraHelper/Recoil"]
+transform = Transform3D(1, 0, 0, 0, 0.988494, 0.151261, 0, -0.151261, 0.988494, 0, -3.57628e-07, -0.25)
+visible = false
+target_position = Vector3(0, 0, -100)
+collision_mask = 5
+hit_from_inside = true
+collide_with_areas = true
+
+[node name="VectorCube" parent="CameraHelper/Recoil/ShootCast" instance=ExtResource( "2_mqeod" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 46.7139, 0, 0, 0)
+visible = false
+
 [node name="RecoilTimer" type="Timer" parent="CameraHelper/Recoil"]
 one_shot = true
 
@@ -102,15 +114,14 @@ near = 0.01
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="TextureRect" type="TextureRect" parent="CameraHelper/Recoil/Camera/HUD"]
+[node name="CrossHair" type="TextureRect" parent="CameraHelper/Recoil/Camera/HUD"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 760.0
 offset_top = 532.0
 offset_right = -760.0
 offset_bottom = -352.0
-texture = ExtResource( "2_rtyu2" )
-ignore_texture_size = true
+texture = ExtResource( "3_llduu" )
 
 [node name="Health" type="Label" parent="CameraHelper/Recoil/Camera/HUD"]
 anchor_right = 1.0
@@ -177,17 +188,9 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="Damage" type="Sprite2D" parent="CameraHelper/Recoil/Camera/HUD"]
+visible = false
 modulate = Color(1, 1, 1, 0)
 position = Vector2(768, 450)
-texture = ExtResource( "3_c0u0s" )
-
-[node name="ShootCast" type="RayCast3D" parent="CameraHelper/Recoil"]
-transform = Transform3D(1, 0, 0, 0, 0.988494, 0.151261, 0, -0.151261, 0.988494, 0, 0, -0.25)
-visible = false
-target_position = Vector3(0, 0, -100)
-collision_mask = 5
-hit_from_inside = true
-collide_with_areas = true
 
 [node name="SlapArea" type="Area3D" parent="CameraHelper/Recoil"]
 transform = Transform3D(1, 0, 0, 0, 0.988494, 0.151261, 0, -0.151261, 0.988494, 0, 0, 0)
@@ -278,4 +281,3 @@ stream = ExtResource( "8_rgjfb" )
 bus = &"SFX"
 
 [connection signal="timeout" from="CameraHelper/Recoil/RecoilTimer" to="." method="_reset_recoil"]
-[connection signal="slap" from="CameraHelper/Recoil/Slapper" to="." method="_slap"]

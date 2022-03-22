@@ -173,23 +173,23 @@ func _physics_process(delta) -> void:
 	
 #	print(goal[1][1].global_transform.origin, " ", player.global_transform.origin)
 	if global_transform.origin.distance_to(goal[1][1].global_transform.origin):
-		motion_velocity += (target - pos).slide(floor_normal).normalized() * ACCELERATION * delta
-		var velocity2D := Vector2(motion_velocity.x, motion_velocity.z)
+		velocity += (target - pos).slide(floor_normal).normalized() * ACCELERATION * delta
+		var velocity2D := Vector2(velocity.x, velocity.z)
 		if velocity2D.length() > MAX_VELOCITY:
 			var velocity_clamp := MAX_VELOCITY / velocity2D.length()
-			motion_velocity.x *= velocity_clamp
-			motion_velocity.z *= velocity_clamp
+			velocity.x *= velocity_clamp
+			velocity.z *= velocity_clamp
 	
 	if $WalkTimer.is_stopped():
-		var vel_2d := Vector2(motion_velocity.x, motion_velocity.z)
+		var vel_2d := Vector2(velocity.x, velocity.z)
 		if vel_2d.length() and is_on_floor():
 			walk_sfx.play_rand()
 			$WalkTimer.start(0.6)
 		
-	motion_velocity.y -= gravity * delta
+	velocity.y -= gravity * delta
 	move_and_slide()
-	motion_velocity.x -= motion_velocity.x * DEACCEL * delta
-	motion_velocity.z -= motion_velocity.z * DEACCEL * delta
+	velocity.x -= velocity.x * DEACCEL * delta
+	velocity.z -= velocity.z * DEACCEL * delta
 	
 	if is_shooting and equipped.can_shoot:
 		_shoot()

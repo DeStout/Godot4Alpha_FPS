@@ -13,7 +13,7 @@ var mute_visible := true
 @onready var music_bus := AudioServer.get_bus_index("Music")
 var mute_setting := Mute.MUSIC
 
-var player : Player
+var player
 var player_invincible := false
 
 
@@ -64,7 +64,7 @@ func _set_mute() -> void:
 			$Mute.text = "Mute: All"
 
 
-func add_enemy_behavior_label(enemy : Enemy) -> Label:
+func add_enemy_behavior_label(enemy) -> Label:
 	var label = Label.new()
 	label.name = enemy.name
 	$Behaviors.add_child(label)

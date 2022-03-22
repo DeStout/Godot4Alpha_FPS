@@ -64,6 +64,7 @@ config/features=PackedStringArray("4.0", "Vulkan Clustered")
 [autoload]
 
 Debug="*res://Debug.tscn"
+Globals="*res://Globals.gd"
 
 [display]
 

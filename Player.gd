@@ -48,19 +48,19 @@ func _ready() -> void:
 func _physics_process(delta) -> void:
 	# Movement
 	if Input.is_action_just_pressed("Jump") and is_on_floor():
-		motion_velocity.y = JUMP_VELOCITY
+		velocity.y = JUMP_VELOCITY
 	var input_dir = Input.get_vector("Strife_L", "Strife_R", "Forward", "Backward")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
-		motion_velocity.x = direction.x * SPEED
-		motion_velocity.z = direction.z * SPEED
+		velocity.x = direction.x * SPEED
+		velocity.z = direction.z * SPEED
 	else:
-		motion_velocity.x = move_toward(motion_velocity.x, 0, SPEED)
-		motion_velocity.z = move_toward(motion_velocity.z, 0, SPEED)
-	motion_velocity.y -= gravity * delta
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.z = move_toward(velocity.z, 0, SPEED)
+	velocity.y -= gravity * delta
 	
 	if $WalkTimer.is_stopped():
-		var vel_2d := Vector2(motion_velocity.x, motion_velocity.z)
+		var vel_2d := Vector2(velocity.x, velocity.z)
 		if vel_2d.length() and is_on_floor():
 			walk_sfx.play_rand()
 			$WalkTimer.start(0.6)
@@ -111,7 +111,7 @@ func _input(event) -> void:
 				_switch_weapon(rifle)
 		
 		if event.is_action_pressed("Drop"):
-			_drop_weapon()
+			_drop_weapon(true)
 
 
 func _shoot() -> void:
@@ -272,8 +272,16 @@ func _switch_weapon(weapon) -> void:
 		_update_HUD()
 
 
-func _drop_weapon() -> void:
-	pass
+func _drop_weapon(player_drop : bool) -> void:
+		if rifle != null:
+			if (player_drop and equipped == rifle) or (!player_drop and equipped.total_ammo > 0):
+				container.drop_weapon(rifle)
+				rifle.queue_free()
+				rifle = null
+		elif pistol != null:
+			pass # Drop pistol if ammo > max_ammo
+		elif slapper != null:
+			pass # Drop slapper lol
 
 
 func add_ammo(amount : int, ammo_for : int, kill_pickup : Callable) -> bool:
