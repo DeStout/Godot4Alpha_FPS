@@ -1,0 +1,67 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://ckjom4e1xg56l"
+path="res://.godot/imported/PuppetAnimations.glb-3d32d8a38fc7d79cafaf4b2e27bba3b8.scn"
+
+[deps]
+
+source_file="res://Characters/PuppetAnimations.glb"
+dest_files=["res://.godot/imported/PuppetAnimations.glb-3d32d8a38fc7d79cafaf4b2e27bba3b8.scn"]
+
+[params]
+
+nodes/root_type="Node3D"
+nodes/root_name="Scene Root"
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+import_script/path=""
+_subresources={
+"animations": {
+"IdleSlapper_Upper": {
+"save_to_file/enabled": false,
+"save_to_file/keep_custom_tracks": "",
+"save_to_file/path": "",
+"settings/loop_mode": 1
+},
+"Idle_Lower": {
+"save_to_file/enabled": false,
+"save_to_file/keep_custom_tracks": "",
+"save_to_file/path": "",
+"settings/loop_mode": 1
+},
+"RunForwardPistol_Upper": {
+"save_to_file/enabled": false,
+"save_to_file/keep_custom_tracks": "",
+"save_to_file/path": "",
+"settings/loop_mode": 1
+},
+"RunForwardSlapper_Upper": {
+"save_to_file/enabled": false,
+"save_to_file/keep_custom_tracks": "",
+"save_to_file/path": "",
+"settings/loop_mode": 1
+},
+"RunForward_Lower": {
+"save_to_file/enabled": false,
+"save_to_file/keep_custom_tracks": "",
+"save_to_file/path": "",
+"settings/loop_mode": 1
+}
+},
+"nodes": {
+"PATH:Character/Skeleton3D": {
+"retarget/bone_map": null
+}
+}
+}

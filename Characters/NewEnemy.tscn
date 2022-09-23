@@ -1,0 +1,176 @@
+[gd_scene load_steps=20 format=3 uid="uid://4qi0af8wtur"]
+
+[ext_resource type="Script" path="res://Characters/NewEnemy.gd" id="1_2juab"]
+[ext_resource type="PackedScene" uid="uid://c7mqhit8rrgne" path="res://Characters/PuppetBase.tscn" id="1_fp06q"]
+[ext_resource type="PackedScene" uid="uid://cy12nf62sv60i" path="res://Debug/VectorCube.tscn" id="2_6bavj"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_w8tv4"]
+radius = 0.333
+height = 1.75
+
+[sub_resource type="SphereMesh" id="SphereMesh_w4l3r"]
+radius = 0.025
+height = 0.05
+
+[sub_resource type="SkeletonModification3DLookAt" id="SkeletonModification3DLookAt_j3kp4"]
+execution_mode = 1
+bone_name = "Chest"
+bone_index = 2
+target_nodepath = NodePath("../../PlayerSeent/Target")
+additional_rotation = Vector3(90, 180, 0)
+
+[sub_resource type="SkeletonModification3DLookAt" id="SkeletonModification3DLookAt_vm6uq"]
+execution_mode = 1
+bone_name = "Neck2"
+bone_index = 4
+target_nodepath = NodePath("../../PlayerSeent/Target")
+additional_rotation = Vector3(90, 180, 0)
+
+[sub_resource type="SkeletonModification3DLookAt" id="SkeletonModification3DLookAt_01lfo"]
+execution_mode = 1
+bone_name = "Head"
+bone_index = 5
+target_nodepath = NodePath("../../PlayerSeent/Target")
+additional_rotation = Vector3(90, 180, 0)
+
+[sub_resource type="SkeletonModificationStack3D" id="SkeletonModificationStack3D_f0swx"]
+enabled = true
+strength = 0.333
+modification_count = 3
+modifications/0 = SubResource("SkeletonModification3DLookAt_j3kp4")
+modifications/1 = SubResource("SkeletonModification3DLookAt_vm6uq")
+modifications/2 = SubResource("SkeletonModification3DLookAt_01lfo")
+
+[sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_c2iyk"]
+
+[sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_lsdtn"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tt8hv"]
+animation = &"Idle_Lower"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_28xjr"]
+animation = &"RunForwardPistol_Upper"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8wbr2"]
+animation = &"RunForwardSlapper_Upper"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ltn1p"]
+animation = &"RunForward_Lower"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0jwk6"]
+animation = &"IdleSlapper_Upper"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_3n2f6"]
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_jcwaj"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_rxdsj"]
+graph_offset = Vector2(-337.117, 182.344)
+nodes/Add2/node = SubResource("AnimationNodeAdd2_lsdtn")
+nodes/Add2/position = Vector2(480, 60)
+"nodes/Add2 2/node" = SubResource("AnimationNodeAdd2_c2iyk")
+"nodes/Add2 2/position" = Vector2(480, 400)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_0jwk6")
+nodes/Animation/position = Vector2(220, 20)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_tt8hv")
+"nodes/Animation 2/position" = Vector2(260, 140)
+"nodes/Animation 3/node" = SubResource("AnimationNodeAnimation_28xjr")
+"nodes/Animation 3/position" = Vector2(-20, 280)
+"nodes/Animation 4/node" = SubResource("AnimationNodeAnimation_8wbr2")
+"nodes/Animation 4/position" = Vector2(-40, 400)
+"nodes/Animation 5/node" = SubResource("AnimationNodeAnimation_ltn1p")
+"nodes/Animation 5/position" = Vector2(0, 520)
+nodes/IdleRun/node = SubResource("AnimationNodeBlend2_3n2f6")
+nodes/IdleRun/position = Vector2(717, 146)
+nodes/PistolSlapper/node = SubResource("AnimationNodeBlend2_jcwaj")
+nodes/PistolSlapper/position = Vector2(280, 300)
+nodes/output/position = Vector2(980, 200)
+node_connections = [&"output", 0, &"IdleRun", &"Add2", 0, &"Animation", &"Add2", 1, &"Animation 2", &"Add2 2", 0, &"PistolSlapper", &"Add2 2", 1, &"Animation 5", &"IdleRun", 0, &"Add2", &"IdleRun", 1, &"Add2 2", &"PistolSlapper", 0, &"Animation 3", &"PistolSlapper", 1, &"Animation 4"]
+
+[node name="NewEnemy" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_2juab")
+
+[node name="NavAgent" type="NavigationAgent3D" parent="."]
+
+[node name="CharacterCollision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+shape = SubResource("CapsuleShape3D_w8tv4")
+
+[node name="PlayerSeent" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
+target_position = Vector3(0, 0, -1)
+collision_mask = 7
+
+[node name="VectorCube" parent="PlayerSeent" instance=ExtResource("2_6bavj")]
+
+[node name="Target" type="Node3D" parent="PlayerSeent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[node name="MeshInstance3d" type="MeshInstance3D" parent="PlayerSeent/Target"]
+mesh = SubResource("SphereMesh_w4l3r")
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
+
+[node name="Camera3d" type="Camera3D" parent="Head"]
+
+[node name="Puppet" parent="." instance=ExtResource("1_fp06q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.168096)
+
+[node name="Skeleton3D" parent="Puppet" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0571644)
+bones/1/position = Vector3(3.91826e-09, 0.887633, -0.0641973)
+bones/1/rotation = Quaternion(2.89313e-08, 0.987396, -0.15827, -1.92464e-07)
+bones/2/rotation = Quaternion(-0.124104, 0.00182793, 0.00402992, 0.992259)
+bones/4/rotation = Quaternion(0.132898, 0.0238176, 0.0232745, 0.99057)
+bones/5/rotation = Quaternion(0.00375374, 0.00332592, 0.0010953, 0.999987)
+bones/7/rotation = Quaternion(-0.507351, 0.421599, -0.280436, 0.697284)
+bones/8/rotation = Quaternion(0.565248, 0.0298408, -0.110061, 0.817001)
+bones/10/rotation = Quaternion(0.0541628, 0.263239, 0.575957, 0.77204)
+bones/11/rotation = Quaternion(0.641156, -0.0276375, 0.124841, 0.756683)
+bones/12/position = Vector3(0.230713, 0.0328944, -0.244777)
+bones/12/rotation = Quaternion(0.146814, 0.219912, -0.566546, 0.780455)
+bones/15/rotation = Quaternion(-0.0716246, -0.0320912, 0.111414, 0.99067)
+bones/16/rotation = Quaternion(-0.0728705, -0.00440987, -0.0389535, 0.996571)
+bones/21/rotation = Quaternion(0.0612659, -0.169755, -0.0869494, 0.979729)
+bones/22/rotation = Quaternion(0.0688573, 0.146545, 0.0441171, 0.985818)
+bones/27/rotation = Quaternion(-0.176079, 0.0204277, -0.217908, 0.959737)
+bones/28/rotation = Quaternion(0.744475, 0.4991, 0.114983, 0.428294)
+bones/29/rotation = Quaternion(0.750193, 0.345773, -0.0860631, 0.556996)
+bones/30/position = Vector3(-0.199028, 0.155367, 0.290109)
+bones/30/rotation = Quaternion(-0.561037, 0.305223, 0.42564, 0.641021)
+bones/33/rotation = Quaternion(-0.125195, 0.0276595, -0.146019, 0.980938)
+bones/34/rotation = Quaternion(-0.117604, -0.0172698, 0.137017, 0.983411)
+bones/39/rotation = Quaternion(0.0898038, 0.167209, 0.113941, 0.975189)
+bones/40/rotation = Quaternion(0.0176292, -0.161482, 0.0307545, 0.986239)
+bones/45/rotation = Quaternion(-0.0361723, -0.0997377, 0.176228, 0.978615)
+bones/46/rotation = Quaternion(-0.391338, -0.480615, 0.695677, -0.363177)
+bones/47/rotation = Quaternion(0.35452, 0.477915, -0.595153, 0.540099)
+bones/49/rotation = Quaternion(-0.539165, 0.137141, -0.225145, 0.799877)
+bones/50/rotation = Quaternion(-0.286068, 0.00333804, 0.438281, 0.852094)
+bones/52/rotation = Quaternion(-0.345553, 0.246869, 0.574126, 0.70002)
+bones/53/rotation = Quaternion(-0.23977, -0.00352046, -0.367348, 0.89864)
+bones/54/position = Vector3(-0.130087, 0.320443, 0.33185)
+bones/54/rotation = Quaternion(0.292944, -0.587716, -0.253305, 0.71036)
+bones/56/rotation = Quaternion(0.0679219, -0.00763636, -0.37495, 0.924522)
+bones/60/position = Vector3(-0.554657, 1.37436, 0.452011)
+bones/60/rotation = Quaternion(0.565929, -0.423939, -0.423939, 0.565929)
+bones/61/position = Vector3(0.11946, 0.290593, -0.465616)
+bones/61/rotation = Quaternion(0.712476, 0.239824, 0.596775, 0.280575)
+bones/63/rotation = Quaternion(0.115462, 0.0280421, 0.493674, 0.861492)
+bones/67/position = Vector3(0.45158, 0.964951, 0.555763)
+bones/67/rotation = Quaternion(0.565929, 0.423939, 0.423939, 0.565929)
+modification_stack = SubResource("SkeletonModificationStack3D_f0swx")
+
+[node name="AnimationTree" type="AnimationTree" parent="Puppet"]
+tree_root = SubResource("AnimationNodeBlendTree_rxdsj")
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/Add2/add_amount = 1.0
+"parameters/Add2 2/add_amount" = 1.0
+parameters/IdleRun/blend_amount = 1.0
+parameters/PistolSlapper/blend_amount = 1.0
+
+[editable path="Puppet"]

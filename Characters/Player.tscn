@@ -1,0 +1,291 @@
+[gd_scene load_steps=23 format=3 uid="uid://dv03ifqueqduo"]
+
+[ext_resource type="Script" path="res://Characters/Player.gd" id="1_s44i8"]
+[ext_resource type="PackedScene" uid="uid://cy12nf62sv60i" path="res://Debug/VectorCube.tscn" id="2_mqeod"]
+[ext_resource type="Texture2D" uid="uid://bxrqfq3vy2tg" path="res://Characters/CrossHair.png" id="3_hj4wd"]
+[ext_resource type="Script" path="res://SFX.gd" id="4_4ee2t"]
+[ext_resource type="Texture2D" uid="uid://ykrf1o6jswwe" path="res://Characters/D_Damage.png" id="4_8wdlq"]
+[ext_resource type="AudioStream" uid="uid://lgaf42ogngsv" path="res://Characters/Hurt1.ogg" id="5_gw5g3"]
+[ext_resource type="PackedScene" path="res://Props/Slapper.tscn" id="5_v2hn7"]
+[ext_resource type="AudioStream" uid="uid://bgwvwcsm8gph8" path="res://Characters/footstep1.ogg" id="6_cnu8t"]
+[ext_resource type="AudioStream" uid="uid://tevag2c1n34i" path="res://Characters/Hurt2.ogg" id="6_d826l"]
+[ext_resource type="AudioStream" uid="uid://dxk5opjm6pasr" path="res://Characters/footstep2.ogg" id="7_0upj2"]
+[ext_resource type="AudioStream" uid="uid://dvwslqt03fwb6" path="res://Props/Slap.ogg" id="7_y5ac8"]
+[ext_resource type="AudioStream" uid="uid://cxkp38ggphhnl" path="res://Characters/Death.ogg" id="8_rgjfb"]
+[ext_resource type="AudioStream" uid="uid://b183f2nb6ap8c" path="res://Characters/footstep3.ogg" id="8_s6p5h"]
+[ext_resource type="AudioStream" uid="uid://choojvhhegbm6" path="res://Props/PickupArmor.ogg" id="8_x64hr"]
+[ext_resource type="AudioStream" uid="uid://dyeb4uhsel3sb" path="res://Characters/footstep4.ogg" id="9_pcylp"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sew1q"]
+resource_local_to_scene = true
+albedo_color = Color(0.517647, 0.686275, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_qjlay"]
+material = SubResource("StandardMaterial3D_sew1q")
+radius = 0.25
+height = 0.5
+radial_segments = 16
+rings = 8
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_nys8q"]
+material = SubResource("StandardMaterial3D_sew1q")
+radius = 0.25
+height = 1.25
+radial_segments = 16
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tpboj"]
+radius = 0.251
+height = 1.75
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_gths8"]
+radius = 0.25
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3if3p"]
+radius = 0.25
+height = 1.25
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_5kwlu"]
+radius = 0.30253
+
+[node name="Player" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 7
+script = ExtResource("1_s44i8")
+metadata/_edit_horizontal_guides_ = [450.0]
+metadata/_edit_vertical_guides_ = [768.0]
+
+[node name="Head" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+visible = false
+layers = 4
+mesh = SubResource("SphereMesh_qjlay")
+skeleton = NodePath("../../..")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.625, 0)
+visible = false
+layers = 4
+mesh = SubResource("CapsuleMesh_nys8q")
+skeleton = NodePath("../../..")
+
+[node name="CharacterCollision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+shape = SubResource("CapsuleShape3D_tpboj")
+
+[node name="DamageCollision" type="Area3D" parent="."]
+collision_layer = 8
+collision_mask = 8
+
+[node name="HeadCollision" type="CollisionShape3D" parent="DamageCollision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("SphereShape3D_gths8")
+
+[node name="BodyCollision" type="CollisionShape3D" parent="DamageCollision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.625, 0)
+shape = SubResource("CapsuleShape3D_3if3p")
+
+[node name="CameraHelper" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="Recoil" type="Node3D" parent="CameraHelper"]
+
+[node name="ShootCast" type="RayCast3D" parent="CameraHelper/Recoil"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.57628e-07, -0.25)
+target_position = Vector3(0, 0, -100)
+collision_mask = 5
+hit_from_inside = true
+collide_with_areas = true
+
+[node name="VectorCube" parent="CameraHelper/Recoil/ShootCast" instance=ExtResource("2_mqeod")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 46.7139, 0, 0, 0)
+visible = false
+
+[node name="RecoilTimer" type="Timer" parent="CameraHelper/Recoil"]
+one_shot = true
+
+[node name="Camera" type="Camera3D" parent="CameraHelper/Recoil"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.25)
+cull_mask = 1048571
+current = true
+near = 0.01
+
+[node name="HUD" type="Control" parent="CameraHelper/Recoil/Camera"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CrossHair" type="TextureRect" parent="CameraHelper/Recoil/Camera/HUD"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 760.0
+offset_top = 442.0
+offset_right = -760.0
+offset_bottom = -442.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_hj4wd")
+stretch_mode = 1
+metadata/_edit_layout_mode = 1
+
+[node name="Health" type="Label" parent="CameraHelper/Recoil/Camera/HUD"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 26.0
+offset_top = 29.0
+offset_right = -1369.0
+offset_bottom = -799.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.615686, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "0
+"
+horizontal_alignment = 2
+metadata/_edit_layout_mode = 1
+
+[node name="Armor" type="Label" parent="CameraHelper/Recoil/Camera/HUD"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 26.0
+offset_top = 92.0
+offset_right = -1369.0
+offset_bottom = -736.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0.615686, 1)
+theme_override_font_sizes/font_size = 50
+text = "0
+"
+horizontal_alignment = 2
+
+[node name="Mag" type="Label" parent="CameraHelper/Recoil/Camera/HUD"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1355.0
+offset_top = 761.0
+offset_right = -54.0
+offset_bottom = -69.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 48
+text = "12/12"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TotalAmmo" type="Label" parent="CameraHelper/Recoil/Camera/HUD"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1381.0
+offset_top = 817.0
+offset_right = -56.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 36
+text = "36"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Damage" type="Sprite2D" parent="CameraHelper/Recoil/Camera/HUD"]
+visible = false
+modulate = Color(1, 1, 1, 0)
+position = Vector2(768, 450)
+texture = ExtResource("4_8wdlq")
+
+[node name="SlapArea" type="Area3D" parent="CameraHelper/Recoil"]
+collision_layer = 16
+collision_mask = 8
+input_ray_pickable = false
+monitorable = false
+
+[node name="Collision" type="CollisionShape3D" parent="CameraHelper/Recoil/SlapArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 1.49011e-08, 0, -1.49011e-08, 1, 0, -1.19209e-07, -0.674995)
+shape = SubResource("SphereShape3D_5kwlu")
+
+[node name="Slapper" parent="CameraHelper/Recoil" instance=ExtResource("5_v2hn7")]
+transform = Transform3D(0.986551, -0.0607031, -0.151761, 0.00491707, 0.939081, -0.34366, 0.163377, 0.338292, 0.926751, 0.151, -0.148, -0.422)
+visible = false
+
+[node name="WalkTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="WalkSFX" type="Node" parent="."]
+script = ExtResource("4_4ee2t")
+
+[node name="Walk1" type="AudioStreamPlayer" parent="WalkSFX"]
+stream = ExtResource("6_cnu8t")
+volume_db = -18.0
+pitch_scale = 0.85
+bus = &"SFX"
+
+[node name="Walk2" type="AudioStreamPlayer" parent="WalkSFX"]
+stream = ExtResource("7_0upj2")
+volume_db = -18.0
+pitch_scale = 0.85
+bus = &"SFX"
+
+[node name="Walk3" type="AudioStreamPlayer" parent="WalkSFX"]
+stream = ExtResource("8_s6p5h")
+volume_db = -18.0
+pitch_scale = 0.85
+bus = &"SFX"
+
+[node name="Walk4" type="AudioStreamPlayer" parent="WalkSFX"]
+stream = ExtResource("9_pcylp")
+volume_db = -18.0
+pitch_scale = 0.85
+bus = &"SFX"
+
+[node name="HealthSFX" type="Node" parent="."]
+script = ExtResource("4_4ee2t")
+
+[node name="Health" type="AudioStreamPlayer" parent="HealthSFX"]
+stream = ExtResource("8_x64hr")
+volume_db = -10.0
+pitch_scale = 2.0
+bus = &"SFX"
+
+[node name="Armor" type="AudioStreamPlayer" parent="HealthSFX"]
+stream = ExtResource("8_x64hr")
+volume_db = -10.0
+pitch_scale = 0.91
+bus = &"SFX"
+
+[node name="Slap" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_y5ac8")
+volume_db = 6.0
+bus = &"SFX"
+
+[node name="HurtTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="HurtSFX" type="Node" parent="."]
+script = ExtResource("4_4ee2t")
+
+[node name="Hurt1" type="AudioStreamPlayer" parent="HurtSFX"]
+stream = ExtResource("5_gw5g3")
+volume_db = 5.0
+bus = &"SFX"
+
+[node name="Hurt2" type="AudioStreamPlayer" parent="HurtSFX"]
+stream = ExtResource("6_d826l")
+volume_db = 2.0
+bus = &"SFX"
+
+[node name="DeathSFX" type="Node" parent="."]
+script = ExtResource("4_4ee2t")
+
+[node name="Death1" type="AudioStreamPlayer" parent="DeathSFX"]
+stream = ExtResource("8_rgjfb")
+bus = &"SFX"
+
+[connection signal="timeout" from="CameraHelper/Recoil/RecoilTimer" to="." method="_reset_recoil"]
+[connection signal="slap" from="CameraHelper/Recoil/Slapper" to="." method="_slap"]
