@@ -225,7 +225,6 @@ visible = false
 
 [node name="Skeleton3D" parent="CharacterBody3d/PuppetAnimations" index="0"]
 bones/1/position = Vector3(-1.08101e-09, 0.894234, -0.0634478)
-bones/1/rotation = Quaternion(2.89313e-08, 0.987396, -0.15827, -1.92464e-07)
 bones/2/rotation = Quaternion(-0.137697, 0.000939191, 0.00329412, 0.990469)
 bones/4/rotation = Quaternion(0.0944265, 0.0132647, 0.0187642, 0.995267)
 bones/5/rotation = Quaternion(0.0631811, 0.00301812, -0.00267814, 0.997994)
@@ -259,12 +258,10 @@ bones/54/position = Vector3(-0.144198, 0.180003, 0.160448)
 bones/54/rotation = Quaternion(0.550019, -0.488213, -0.331812, 0.590786)
 bones/56/rotation = Quaternion(0.0820493, 0.0324654, -0.445783, 0.890781)
 bones/60/position = Vector3(-0.324582, 0.962178, -0.428659)
-bones/60/rotation = Quaternion(0.565929, -0.423939, -0.423939, 0.565929)
 bones/61/position = Vector3(0.11946, 0.391983, -0.287822)
 bones/61/rotation = Quaternion(0.406744, 0.551244, 0.213787, 0.696408)
 bones/63/rotation = Quaternion(-0.0743316, 0.000263015, -0.118216, 0.990202)
 bones/67/position = Vector3(0.177047, 0.971755, -0.536806)
-bones/67/rotation = Quaternion(0.565929, 0.423939, 0.423939, 0.565929)
 
 [node name="Pistol" parent="CharacterBody3d" index="5"]
 transform = Transform3D(0.999809, 0, 0, 0, 0.999704, 0, 0, 0, 0.999818, 0.0482904, 1.3808, -0.480773)

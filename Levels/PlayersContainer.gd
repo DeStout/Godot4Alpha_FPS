@@ -5,7 +5,7 @@ extends Node3D
 @export_node_path(Node3D) var pickups_
 @export_node_path(Node3D) var nav_points_
 @export var respawn_time := 5.0
-@export_range(0,64) var num_enemies := 7
+@export_range(0,64) var num_enemies := 5
 
 var spawns : Node3D
 var pickups : Node3D
@@ -45,6 +45,7 @@ func _ready() -> void:
 #		enemy.target_location = Node3D.new()
 #		add_child(enemy.target_location)
 #		enemy.target_location.name = str(enemy.name) + "_target"
+		enemy.get_node("Label").text = str(enemy.name)
 		
 		enemy.debug_label = Debug.add_enemy_behavior_label(enemy)
 		

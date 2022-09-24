@@ -28,7 +28,7 @@ func _input(event):
 				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 "
 
-[node name="Level1" type="Node3D"]
+[node name="Level2" type="Node3D"]
 
 [node name="Level" parent="." instance=ExtResource("1_vufbv")]
 
