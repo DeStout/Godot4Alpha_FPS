@@ -34,6 +34,16 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://Characters/Player.gd"
 }, {
+"base": "Node",
+"class": &"State",
+"language": &"GDScript",
+"path": "res://Characters/State.gd"
+}, {
+"base": "Node",
+"class": &"StateMachine",
+"language": &"GDScript",
+"path": "res://Characters/StateMachine.gd"
+}, {
 "base": "Node3D",
 "class": &"Weapon",
 "language": &"GDScript",
@@ -55,6 +65,8 @@ _global_script_class_icons={
 "Enemy": "",
 "HealthPack": "",
 "Player": "",
+"State": "",
+"StateMachine": "",
 "Weapon": "",
 "WeaponPickup": "",
 "old_Enemy": ""

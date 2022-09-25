@@ -3,9 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://q0227uvq4f2x" path="res://Levels/Level1Base.tscn" id="1_il041"]
 [ext_resource type="Script" path="res://Levels/PlayersContainer.gd" id="2_ctt1n"]
 [ext_resource type="PackedScene" path="res://Props/Ammo.tscn" id="3_fq3o5"]
-[ext_resource type="PackedScene" path="res://Levels/WeaponPickup.tscn" id="4_bexsk"]
+[ext_resource type="PackedScene" path="res://Props/WeaponPickup.tscn" id="4_bexsk"]
 [ext_resource type="AudioStream" uid="uid://cseiawxqwcafv" path="res://PerfectEye_v1_Looping_Demo.ogg" id="5_gnk7r"]
-[ext_resource type="PackedScene" uid="uid://ban4ymlmqylro" path="res://Props/HealthPack.tscn" id="5_sik53"]
+[ext_resource type="PackedScene" path="res://Props/HealthPack.tscn" id="5_sik53"]
 [ext_resource type="PackedScene" path="res://Props/Armor.tscn" id="6_yg44v"]
 
 [sub_resource type="GDScript" id="GDScript_arxdg"]

@@ -1,9 +1,14 @@
-[gd_scene load_steps=25 format=3 uid="uid://4qi0af8wtur"]
+[gd_scene load_steps=31 format=3 uid="uid://bidcwajhcrj40"]
 
-[ext_resource type="Script" path="res://Characters/NewEnemy.gd" id="1_2juab"]
-[ext_resource type="PackedScene" uid="uid://c7mqhit8rrgne" path="res://Characters/PuppetBase.tscn" id="1_fp06q"]
-[ext_resource type="PackedScene" uid="uid://cy12nf62sv60i" path="res://Debug/VectorCube.tscn" id="2_6bavj"]
-[ext_resource type="PackedScene" path="res://Props/Pistol.tscn" id="4_qy32s"]
+[ext_resource type="Script" path="res://Characters/TestEnemy.gd" id="1_5h5c1"]
+[ext_resource type="PackedScene" uid="uid://cy12nf62sv60i" path="res://Debug/VectorCube.tscn" id="2_k18s0"]
+[ext_resource type="PackedScene" uid="uid://c7mqhit8rrgne" path="res://Characters/PuppetBase.tscn" id="3_5cnav"]
+[ext_resource type="PackedScene" path="res://Props/Pistol.tscn" id="4_sxdjx"]
+[ext_resource type="Script" path="res://Characters/BehaviorMachine.gd" id="5_nflbk"]
+[ext_resource type="Script" path="res://Characters/StateIdle.gd" id="6_o2q4n"]
+[ext_resource type="Script" path="res://Characters/StatePatrol.gd" id="6_rrmeq"]
+[ext_resource type="Script" path="res://Characters/StateSeek.gd" id="7_mty44"]
+[ext_resource type="Script" path="res://Characters/StateAttack.gd" id="8_mt63k"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_w8tv4"]
 radius = 0.333
@@ -92,8 +97,10 @@ animation = &"IdleSlapper_Upper"
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_jcwaj"]
 
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_37bpb"]
+
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_rxdsj"]
-graph_offset = Vector2(-337.117, 182.344)
+graph_offset = Vector2(-408.884, -2.95139)
 nodes/Add2/node = SubResource("AnimationNodeAdd2_lsdtn")
 nodes/Add2/position = Vector2(480, 60)
 "nodes/Add2 2/node" = SubResource("AnimationNodeAdd2_c2iyk")
@@ -112,13 +119,15 @@ nodes/IdleRun/node = SubResource("AnimationNodeBlend2_3n2f6")
 nodes/IdleRun/position = Vector2(717, 146)
 nodes/PistolSlapper/node = SubResource("AnimationNodeBlend2_jcwaj")
 nodes/PistolSlapper/position = Vector2(280, 300)
-nodes/output/position = Vector2(980, 200)
-node_connections = [&"output", 0, &"IdleRun", &"Add2", 0, &"Animation", &"Add2", 1, &"Animation 2", &"Add2 2", 0, &"PistolSlapper", &"Add2 2", 1, &"Animation 5", &"IdleRun", 0, &"Add2", &"IdleRun", 1, &"Add2 2", &"PistolSlapper", 0, &"Animation 3", &"PistolSlapper", 1, &"Animation 4"]
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_37bpb")
+nodes/TimeScale/position = Vector2(980, 160)
+nodes/output/position = Vector2(1280, 220)
+node_connections = [&"output", 0, &"TimeScale", &"Add2", 0, &"Animation", &"Add2", 1, &"Animation 2", &"Add2 2", 0, &"PistolSlapper", &"Add2 2", 1, &"Animation 5", &"IdleRun", 0, &"Add2", &"IdleRun", 1, &"Add2 2", &"PistolSlapper", 0, &"Animation 3", &"PistolSlapper", 1, &"Animation 4", &"TimeScale", 0, &"IdleRun"]
 
-[node name="NewEnemy" type="CharacterBody3D"]
+[node name="TestEnemy" type="CharacterBody3D"]
 collision_layer = 4
 collision_mask = 7
-script = ExtResource("1_2juab")
+script = ExtResource("1_5h5c1")
 
 [node name="NavAgent" type="NavigationAgent3D" parent="."]
 
@@ -131,7 +140,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
 target_position = Vector3(0, 0, -1)
 collision_mask = 3
 
-[node name="VectorCube" parent="PlayerSeent" instance=ExtResource("2_6bavj")]
+[node name="VectorCube" parent="PlayerSeent" instance=ExtResource("2_k18s0")]
 visible = false
 
 [node name="Target" type="Node3D" parent="PlayerSeent"]
@@ -146,53 +155,56 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
 
 [node name="Camera3d" type="Camera3D" parent="Head"]
 
-[node name="Puppet" parent="." instance=ExtResource("1_fp06q")]
+[node name="Puppet" parent="." instance=ExtResource("3_5cnav")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.168096)
 
 [node name="Skeleton3D" parent="Puppet" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0571644)
-bones/1/position = Vector3(-7.73199e-09, 0.836443, -0.0631427)
+bones/1/position = Vector3(2.12822e-09, 0.819054, -0.0633037)
 bones/1/rotation = Quaternion(2.89313e-08, 0.987396, -0.15827, -1.92464e-07)
-bones/2/rotation = Quaternion(-0.135733, 0.000878147, 0.00330589, 0.99074)
-bones/4/rotation = Quaternion(0.0883156, 0.0128647, 0.0190046, 0.995828)
-bones/5/rotation = Quaternion(0.0333799, 0.00181301, -0.00192819, 0.999439)
-bones/7/rotation = Quaternion(0.589399, -0.198754, -0.629952, 0.465045)
-bones/8/rotation = Quaternion(0.210912, 0.0356477, -0.0410672, 0.975991)
-bones/10/rotation = Quaternion(0.418983, 0.268574, 0.678638, 0.540159)
-bones/11/rotation = Quaternion(0.4588, -0.0322675, 0.0893344, 0.883448)
-bones/12/position = Vector3(-0.0205723, 0.318823, 0.334697)
-bones/12/rotation = Quaternion(-0.420987, -0.183008, -0.541212, 0.704534)
+bones/2/rotation = Quaternion(-0.0928544, -0.000451081, 0.00355869, 0.995673)
+bones/4/rotation = Quaternion(0.102824, 0.0135885, 0.0184755, 0.994435)
+bones/5/rotation = Quaternion(0.0128021, 0.00109862, -0.00212594, 0.999915)
+bones/7/rotation = Quaternion(0.607055, -0.19105, -0.608496, 0.474042)
+bones/8/rotation = Quaternion(0.213096, 0.0356297, -0.0414925, 0.9755)
+bones/10/rotation = Quaternion(0.435647, 0.262819, 0.662216, 0.550098)
+bones/11/rotation = Quaternion(0.458635, -0.0322708, 0.0893023, 0.883537)
+bones/12/position = Vector3(-0.0205242, 0.320475, 0.334233)
+bones/12/rotation = Quaternion(-0.425876, -0.181211, -0.539204, 0.703598)
 bones/15/rotation = Quaternion(-0.136752, -0.0311937, 0.100512, 0.984999)
 bones/16/rotation = Quaternion(-0.352684, -0.0473181, -0.50171, 0.788455)
 bones/21/rotation = Quaternion(0.00413199, -0.168782, -0.154747, 0.973421)
 bones/22/rotation = Quaternion(-0.394365, 0.0948887, -0.480339, 0.777655)
 bones/27/rotation = Quaternion(-0.105765, -0.0530162, -0.0569688, 0.991341)
-bones/28/rotation = Quaternion(0.580679, 0.303431, -0.166641, 0.736866)
-bones/29/rotation = Quaternion(0.523838, 0.211032, -0.208484, 0.798495)
-bones/30/position = Vector3(-0.0489428, 0.328334, 0.328695)
-bones/30/rotation = Quaternion(-0.427059, 0.0374833, 0.478727, 0.766183)
+bones/28/rotation = Quaternion(0.608939, 0.294224, -0.180839, 0.714089)
+bones/29/rotation = Quaternion(0.554491, 0.200001, -0.218788, 0.777606)
+bones/30/position = Vector3(-0.0489348, 0.329988, 0.328431)
+bones/30/rotation = Quaternion(-0.427307, 0.0428626, 0.479987, 0.764973)
 bones/33/rotation = Quaternion(-0.244851, 0.183849, 0.0430019, 0.950999)
 bones/34/rotation = Quaternion(-0.38701, -0.00258387, 0.473995, 0.790914)
 bones/39/rotation = Quaternion(-0.0280185, 0.194239, 0.268623, 0.943042)
 bones/40/rotation = Quaternion(-0.46123, -0.0717648, 0.471175, 0.748405)
 bones/45/rotation = Quaternion(-0.209561, -0.246504, 0.40331, 0.855956)
-bones/46/rotation = Quaternion(-0.199278, -0.51263, 0.835153, 0.0044002)
-bones/47/rotation = Quaternion(0.170615, 0.345227, -0.774933, 0.501186)
-bones/49/rotation = Quaternion(-0.482482, 0.0101835, -0.3667, 0.795386)
-bones/50/rotation = Quaternion(-0.258176, 0.00345297, 0.395548, 0.881405)
-bones/52/rotation = Quaternion(-0.303473, 0.229346, 0.587977, 0.713854)
-bones/53/rotation = Quaternion(-0.450505, -0.00221793, -0.690214, 0.566255)
-bones/54/position = Vector3(-0.141591, 0.133879, 0.059861)
-bones/54/rotation = Quaternion(0.634466, -0.423188, -0.431563, 0.481787)
-bones/56/rotation = Quaternion(0.0279199, 0.00791657, -0.258599, 0.965549)
+bones/46/rotation = Quaternion(-0.195924, -0.478984, 0.855611, 0.0108805)
+bones/47/rotation = Quaternion(0.187714, 0.312386, -0.788834, 0.494893)
+bones/49/rotation = Quaternion(-0.313656, -0.211003, -0.575934, 0.724844)
+bones/50/rotation = Quaternion(-0.461473, 0.00209894, 0.707018, 0.535877)
+bones/52/rotation = Quaternion(-0.471528, 0.00834064, 0.385225, 0.793217)
+bones/53/rotation = Quaternion(-0.271401, -0.00340038, -0.415811, 0.868004)
+bones/54/position = Vector3(-0.11946, 0.389021, -0.105519)
+bones/54/rotation = Quaternion(0.192525, -0.603081, -0.0456868, 0.772748)
+bones/56/rotation = Quaternion(-0.03272, -0.00486257, 0.0273621, 0.999078)
 bones/60/position = Vector3(-0.324582, 0.962178, -0.428659)
 bones/60/rotation = Quaternion(0.565929, -0.423939, -0.423939, 0.565929)
-bones/61/position = Vector3(0.11946, 0.389359, -0.145219)
-bones/61/rotation = Quaternion(0.225741, 0.598476, 0.0697928, 0.765504)
-bones/63/rotation = Quaternion(-0.096148, 0.00309237, -0.200959, 0.974865)
+bones/61/position = Vector3(0.140983, 0.123122, 0.036402)
+bones/61/rotation = Quaternion(0.637117, 0.397464, 0.473979, 0.459835)
+bones/63/rotation = Quaternion(0.0187264, -0.00162422, 0.218302, 0.9757)
 bones/67/position = Vector3(0.177047, 0.971755, -0.536806)
 bones/67/rotation = Quaternion(0.565929, 0.423939, 0.423939, 0.565929)
 modification_stack = SubResource("SkeletonModificationStack3D_bw704")
+
+[node name="AnimationPlayer" parent="Puppet" index="1"]
+playback_speed = 0.7
 
 [node name="AnimationTree" type="AnimationTree" parent="Puppet"]
 tree_root = SubResource("AnimationNodeBlendTree_rxdsj")
@@ -202,16 +214,18 @@ parameters/Add2/add_amount = 1.0
 "parameters/Add2 2/add_amount" = 1.0
 parameters/IdleRun/blend_amount = 1.0
 parameters/PistolSlapper/blend_amount = 0.0
+parameters/TimeScale/scale = 1.0
 
 [node name="BoneAttachment3d" type="BoneAttachment3D" parent="Puppet"]
-transform = Transform3D(0.835188, 0.334016, 0.436915, -0.472516, 0.0293088, 0.880835, 0.281408, -0.942111, 0.182306, 0.0491566, 1.42462, -0.487594)
+transform = Transform3D(0.838731, 0.325734, 0.436382, -0.47051, 0.030069, 0.881882, 0.274137, -0.944983, 0.178481, 0.0492366, 1.40694, -0.489657)
 bone_name = "Hand1.R"
 bone_idx = 31
 use_external_skeleton = true
 external_skeleton = NodePath("../Skeleton3D")
 
-[node name="Pistol" parent="Puppet/BoneAttachment3d" instance=ExtResource("4_qy32s")]
+[node name="Pistol" parent="Puppet/BoneAttachment3d" instance=ExtResource("4_sxdjx")]
 transform = Transform3D(0.840861, -0.469476, 0.269341, 0.334602, 0.0597435, -0.940464, 0.425434, 0.880922, 0.207324, -0.0389215, 0.0973543, 0.000523806)
+visible = false
 
 [node name="Label" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
@@ -223,5 +237,20 @@ no_depth_test = true
 render_priority = 1
 text = "Enemy"
 outline_size = 6
+
+[node name="BehaviorMachine" type="Node" parent="."]
+script = ExtResource("5_nflbk")
+
+[node name="Idle" type="Node" parent="BehaviorMachine"]
+script = ExtResource("6_o2q4n")
+
+[node name="Patrol" type="Node" parent="BehaviorMachine"]
+script = ExtResource("6_rrmeq")
+
+[node name="Seek" type="Node" parent="BehaviorMachine"]
+script = ExtResource("7_mty44")
+
+[node name="Attack" type="Node" parent="BehaviorMachine"]
+script = ExtResource("8_mt63k")
 
 [editable path="Puppet"]

@@ -1,9 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://brsk7sdrkli2l"]
+[gd_scene load_steps=9 format=3 uid="uid://bhngprgstjthk"]
 
 [ext_resource type="PackedScene" uid="uid://debo1o7qgu6hu" path="res://Levels/Level2Base.tscn" id="1_vufbv"]
 [ext_resource type="Script" path="res://Levels/PlayersContainer.gd" id="2_vqqi5"]
 [ext_resource type="PackedScene" path="res://Props/Ammo.tscn" id="3_ioqjk"]
-[ext_resource type="PackedScene" path="res://Levels/WeaponPickup.tscn" id="4_jybxi"]
+[ext_resource type="PackedScene" path="res://Props/WeaponPickup.tscn" id="4_jybxi"]
 [ext_resource type="PackedScene" path="res://Props/HealthPack.tscn" id="5_emhvb"]
 [ext_resource type="PackedScene" path="res://Props/Armor.tscn" id="6_w65t4"]
 [ext_resource type="AudioStream" uid="uid://cseiawxqwcafv" path="res://PerfectEye_v1_Looping_Demo.ogg" id="7_vf0ep"]

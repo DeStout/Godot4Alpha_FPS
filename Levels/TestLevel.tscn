@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://bjj5lhs05lts1"]
+
+[ext_resource type="PackedScene" uid="uid://dv03ifqueqduo" path="res://Characters/Player.tscn" id="1_7d36r"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_4vdmj"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_k30a4"]
+sky_material = SubResource("ProceduralSkyMaterial_4vdmj")
+
+[sub_resource type="Environment" id="Environment_qxp1x"]
+background_mode = 2
+sky = SubResource("Sky_k30a4")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_k65o3"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_7aetu"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_241ub"]
+size = Vector2(100, 100)
+
+[node name="TestLevel" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_qxp1x")
+
+[node name="DirectionalLight3d" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Level" type="Node3D" parent="."]
+
+[node name="NavigationRegion3d" type="NavigationRegion3D" parent="Level"]
+navmesh = SubResource("NavigationMesh_k65o3")
+
+[node name="World" type="StaticBody3D" parent="Level/NavigationRegion3d"]
+collision_mask = 6
+
+[node name="CollisionShape3d" type="CollisionShape3D" parent="Level/NavigationRegion3d/World"]
+shape = SubResource("WorldBoundaryShape3D_7aetu")
+
+[node name="MeshInstance3d" type="MeshInstance3D" parent="Level/NavigationRegion3d"]
+mesh = SubResource("PlaneMesh_241ub")
+
+[node name="Player" parent="." instance=ExtResource("1_7d36r")]
