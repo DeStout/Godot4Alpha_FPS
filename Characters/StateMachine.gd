@@ -33,6 +33,6 @@ func transition_to(target_state : String, msg : Dictionary = {}) -> void:
 		return
 	
 	state.exit()
-	state.get_node(target_state)
+	state = get_node(target_state)
 	state.enter()
 	emit_signal("transitioned", state.name)

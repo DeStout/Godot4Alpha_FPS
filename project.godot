@@ -22,7 +22,12 @@ _global_script_classes=[{
 "base": "CharacterBody3D",
 "class": &"Enemy",
 "language": &"GDScript",
-"path": "res://Characters/NewEnemy.gd"
+"path": "res://Characters/TestEnemy.gd"
+}, {
+"base": "State",
+"class": &"EnemyState",
+"language": &"GDScript",
+"path": "res://Characters/EnemyState.gd"
 }, {
 "base": "Node3D",
 "class": &"HealthPack",
@@ -53,23 +58,18 @@ _global_script_classes=[{
 "class": &"WeaponPickup",
 "language": &"GDScript",
 "path": "res://Props/WeaponPickup.gd"
-}, {
-"base": "CharacterBody3D",
-"class": &"old_Enemy",
-"language": &"GDScript",
-"path": "res://Characters/Enemy.gd"
 }]
 _global_script_class_icons={
 "Ammo": "",
 "Armor": "",
 "Enemy": "",
+"EnemyState": "",
 "HealthPack": "",
 "Player": "",
 "State": "",
 "StateMachine": "",
 "Weapon": "",
-"WeaponPickup": "",
-"old_Enemy": ""
+"WeaponPickup": ""
 }
 
 [application]

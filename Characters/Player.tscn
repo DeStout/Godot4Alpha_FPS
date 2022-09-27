@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dv03ifqueqduo"]
+[gd_scene load_steps=24 format=3 uid="uid://dv03ifqueqduo"]
 
 [ext_resource type="Script" path="res://Characters/Player.gd" id="1_s44i8"]
 [ext_resource type="PackedScene" uid="uid://cy12nf62sv60i" path="res://Debug/VectorCube.tscn" id="2_mqeod"]
@@ -15,6 +15,7 @@
 [ext_resource type="AudioStream" uid="uid://b183f2nb6ap8c" path="res://Characters/footstep3.ogg" id="8_s6p5h"]
 [ext_resource type="AudioStream" uid="uid://choojvhhegbm6" path="res://Props/PickupArmor.ogg" id="8_x64hr"]
 [ext_resource type="AudioStream" uid="uid://dyeb4uhsel3sb" path="res://Characters/footstep4.ogg" id="9_pcylp"]
+[ext_resource type="Script" path="res://Characters/Pause.gd" id="16_0d8x2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sew1q"]
 resource_local_to_scene = true
@@ -53,6 +54,10 @@ collision_mask = 3
 script = ExtResource("1_s44i8")
 metadata/_edit_horizontal_guides_ = [450.0]
 metadata/_edit_vertical_guides_ = [768.0]
+
+[node name="Pause" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("16_0d8x2")
 
 [node name="Head" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)

@@ -1,5 +1,5 @@
 extends CharacterBody3D
-class_name Enemy
+#class_name Enemy
 
 # Debug
 var debug_label : Label

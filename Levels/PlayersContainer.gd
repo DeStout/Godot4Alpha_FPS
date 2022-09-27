@@ -11,7 +11,7 @@ var spawns : Node3D
 var pickups : Node3D
 var nav_points : Node3D
 var player_ := load("res://Characters/Player.tscn")
-var enemy_ := load("res://Characters/NewEnemy.tscn")
+var enemy_ := load("res://Characters/TestEnemy.tscn")
 var player : CharacterBody3D
 var enemies := []
 

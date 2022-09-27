@@ -1,5 +1,5 @@
 extends CharacterBody3D
-#class_name Enemy
+class_name Enemy
 
 # Debug
 var debug_label : Label
@@ -35,6 +35,9 @@ var temp_dot := 0.0
 
 func _ready() -> void:
 	visual_target_default = visual_target.position
+	
+	await owner.ready
+	player = owner.get_node("Player")
 
 
 func _physics_process(delta) -> void:
@@ -87,3 +90,6 @@ func _player_is_seent() -> void:
 		# Show sight to visual_target
 #		$PlayerSeent/VectorCube.look_at(visual_target.global_position)
 #		$PlayerSeent/VectorCube.scale.z = global_position.distance_to(visual_target.global_position)*5
+
+func _state_transitioned(new_state) -> void:
+	print(str(new_state.name))
