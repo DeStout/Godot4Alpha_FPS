@@ -2,7 +2,8 @@ extends EnemyState
 
 
 func handle_input(_event : InputEvent) -> void:
-	pass
+	if _event.is_action_pressed("Drop"):
+		state_machine.transition_to("Idle")
 
 
 func update(delta : float) -> void:
@@ -14,7 +15,7 @@ func physics_update(delta : float) -> void:
 
 
 func enter(_msg := {}) -> void:
-	pass
+	anim_tree.travel("Run")
 
 
 func exit() -> void:

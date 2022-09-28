@@ -21,6 +21,7 @@ var player : Player = null
 var player_seent := false
 @onready var visual_target : Node3D = $PlayerSeent/Target
 var visual_target_default := Vector3.ZERO
+@export_node_path(Path3D) var patrol_path
 
 var floor_normal := Vector3.UP
 var moving_target := Vector3.ZERO
@@ -35,6 +36,7 @@ var temp_dot := 0.0
 
 func _ready() -> void:
 	visual_target_default = visual_target.position
+	patrol_path = get_node(patrol_path)
 	
 	await owner.ready
 	player = owner.get_node("Player")
@@ -92,4 +94,4 @@ func _player_is_seent() -> void:
 #		$PlayerSeent/VectorCube.scale.z = global_position.distance_to(visual_target.global_position)*5
 
 func _state_transitioned(new_state) -> void:
-	print(str(new_state.name))
+	print(new_state)

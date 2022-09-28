@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bjj5lhs05lts1"]
+[gd_scene load_steps=19 format=3 uid="uid://bjj5lhs05lts1"]
 
 [ext_resource type="PackedScene" uid="uid://dv03ifqueqduo" path="res://Characters/Player.tscn" id="1_7d36r"]
 [ext_resource type="PackedScene" uid="uid://bidcwajhcrj40" path="res://Characters/TestEnemy.tscn" id="2_16qsl"]
@@ -31,6 +31,13 @@ fog_aerial_perspective = 0.475
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_241ub"]
 size = Vector2(100, 100)
+
+[sub_resource type="Curve3D" id="Curve3D_057ig"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0.68795, 0.398501, -4.74486, 0, 0, 0, 0, 0, 0, 5.42158, 0.328538, -5.25854, 0, 0, 0, 0, 0, 0, 10.81, 0.235354, -6.23528),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
+point_count = 3
 
 [sub_resource type="SkeletonModification3DLookAt" id="SkeletonModification3DLookAt_ba3uu"]
 resource_local_to_scene = true
@@ -88,6 +95,8 @@ modification_count = 2
 modifications/0 = SubResource("SkeletonModification3DStackHolder_e3f2g")
 modifications/1 = SubResource("SkeletonModification3DStackHolder_76mpp")
 
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_cl1cg"]
+
 [node name="TestLevel" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -115,14 +124,21 @@ shape = SubResource("WorldBoundaryShape3D_7aetu")
 [node name="MeshInstance3d" type="MeshInstance3D" parent="Level/NavigationRegion3d"]
 mesh = SubResource("PlaneMesh_241ub")
 
+[node name="Patrol1" type="Path3D" parent="Level/NavigationRegion3d"]
+curve = SubResource("Curve3D_057ig")
+
+[node name="PathFollow" type="PathFollow3D" parent="Level/NavigationRegion3d/Patrol1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.68795, 0.398501, -4.74486)
+loop = false
+
 [node name="Player" parent="." instance=ExtResource("1_7d36r")]
 
 [node name="TestEnemy" parent="." instance=ExtResource("2_16qsl")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -4.96514)
+patrol_path = NodePath("../Level/NavigationRegion3d/Patrol1")
 
 [node name="Skeleton3D" parent="TestEnemy/Puppet" index="0"]
 bones/1/position = Vector3(5.78601e-10, 0.779767, -0.0653875)
-bones/1/rotation = Quaternion(2.89313e-08, 0.987396, -0.15827, -1.92464e-07)
 bones/2/rotation = Quaternion(-0.0960654, -0.000351758, 0.00354002, 0.995369)
 bones/4/rotation = Quaternion(0.100813, 0.0135353, 0.0185396, 0.994641)
 bones/5/rotation = Quaternion(0.00818208, 0.000863526, -0.00167101, 0.999965)
@@ -155,18 +171,19 @@ bones/53/rotation = Quaternion(-0.296752, -0.00328975, -0.45465, 0.839774)
 bones/54/position = Vector3(-0.11946, 0.405824, 0.0686687)
 bones/54/rotation = Quaternion(0.0198651, -0.612355, 0.0544247, 0.788457)
 bones/56/rotation = Quaternion(-0.0537966, -0.00017603, 0.0953102, 0.993993)
-bones/60/rotation = Quaternion(0.565929, -0.423939, -0.423939, 0.565929)
 bones/61/position = Vector3(0.136174, 0.109171, -0.0947685)
 bones/61/rotation = Quaternion(0.655287, 0.372995, 0.507009, 0.417631)
 bones/63/rotation = Quaternion(0.00495412, 0.00577785, 0.163837, 0.986458)
-bones/67/rotation = Quaternion(0.565929, 0.423939, 0.423939, 0.565929)
 modification_stack = SubResource("SkeletonModificationStack3D_7onqo")
 
-[node name="BoneAttachment3d" parent="TestEnemy/Puppet" index="3"]
-transform = Transform3D(0.840241, 0.325881, 0.433355, -0.476029, 0.0607063, 0.877332, 0.259598, -0.94346, 0.206137, 0.0492952, 1.3757, -0.484753)
+[node name="AnimationTree2" parent="TestEnemy/Puppet" index="3"]
+parameters/playback = SubResource("AnimationNodeStateMachinePlayback_cl1cg")
 
-[node name="BehaviorMachine" parent="TestEnemy" index="6"]
-initial_state = NodePath("Idle")
+[node name="BoneAttachment3d" parent="TestEnemy/Puppet" index="4"]
+transform = Transform3D(0.840241, 0.32588, 0.433355, -0.475086, 0.0572886, 0.878073, 0.26132, -0.943674, 0.202957, 0.0492949, 1.37465, -0.486086)
+
+[node name="Pistol" parent="TestEnemy/Puppet/BoneAttachment3d" index="0"]
+is_automatic = false
 
 [connection signal="transitioned" from="TestEnemy/BehaviorMachine" to="TestEnemy" method="_state_transitioned"]
 
