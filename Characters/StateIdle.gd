@@ -1,4 +1,4 @@
-extends State
+extends EnemyState
 
 
 func handle_input(_event : InputEvent) -> void:
@@ -14,7 +14,7 @@ func physics_update(delta : float) -> void:
 
 
 func enter(_msg := {}) -> void:
-	pass
+	$"%AnimationTree".parameters.IdleRun.blend_amount = 0
 
 
 func exit() -> void:
