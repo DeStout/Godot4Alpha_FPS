@@ -13,7 +13,7 @@ func _ready():
 	
 	for child in get_children():
 		child.state_machine = self
-	state.enter()
+	transition_to(str(state.name))
 
 
 func _unhandled_input(event) -> void:
@@ -30,6 +30,7 @@ func _physics_process(delta) -> void:
 
 func transition_to(target_state : String, msg : Dictionary = {}) -> void:
 	if !has_node(target_state):
+		print("Node doesn't exit: ", target_state)
 		return
 	
 	state.exit()

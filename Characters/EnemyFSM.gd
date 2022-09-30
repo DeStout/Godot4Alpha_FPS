@@ -1,6 +1,11 @@
 extends StateMachine
 
 
+#func _ready() -> void:
+#	await owner.ready
+#	super()
+
+
 #signal transitioned(state_name)
 #@export_node_path(Node) var initial_state
 #@onready var state : State = get_node(initial_state)

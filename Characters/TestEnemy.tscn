@@ -276,12 +276,13 @@ tree_root = SubResource("AnimationNodeStateMachine_gtvgh")
 anim_player = NodePath("../AnimationPlayer")
 active = true
 process_callback = 0
+root_motion_track = NodePath("Skeleton3D:Root")
 parameters/playback = SubResource("AnimationNodeStateMachinePlayback_frycf")
 parameters/Idle/Add2/add_amount = 1.0
 parameters/Run/Add2/add_amount = 1.0
 
 [node name="BoneAttachment3d" type="BoneAttachment3D" parent="Puppet"]
-transform = Transform3D(0.942015, 0.0484033, 0.332061, -0.301459, 0.556758, 0.774043, -0.147411, -0.829263, 0.539066, 0.199382, 1.29811, -0.432839)
+transform = Transform3D(0.943891, 0.0452224, 0.327146, -0.272144, 0.667707, 0.692896, -0.187103, -0.74305, 0.642549, 0.198471, 1.33888, -0.464245)
 bone_name = "Hand1.R"
 bone_idx = 31
 use_external_skeleton = true

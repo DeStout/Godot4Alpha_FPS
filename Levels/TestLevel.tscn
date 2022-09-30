@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bjj5lhs05lts1"]
+[gd_scene load_steps=22 format=3 uid="uid://bjj5lhs05lts1"]
 
 [ext_resource type="PackedScene" uid="uid://dv03ifqueqduo" path="res://Characters/Player.tscn" id="1_7d36r"]
 [ext_resource type="PackedScene" uid="uid://bidcwajhcrj40" path="res://Characters/TestEnemy.tscn" id="2_16qsl"]
@@ -27,10 +27,10 @@ fog_aerial_perspective = 0.475
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_k65o3"]
 
-[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_7aetu"]
-
 [sub_resource type="PlaneMesh" id="PlaneMesh_241ub"]
 size = Vector2(100, 100)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_7aetu"]
 
 [sub_resource type="Curve3D" id="Curve3D_057ig"]
 _data = {
@@ -38,6 +38,12 @@ _data = {
 "tilts": PackedFloat32Array(0, 0, 0)
 }
 point_count = 3
+
+[sub_resource type="BoxMesh" id="BoxMesh_wut8v"]
+size = Vector3(2, 3, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_epw11"]
+size = Vector3(2, 3, 2)
 
 [sub_resource type="SkeletonModification3DLookAt" id="SkeletonModification3DLookAt_ba3uu"]
 resource_local_to_scene = true
@@ -95,6 +101,9 @@ modification_count = 2
 modifications/0 = SubResource("SkeletonModification3DStackHolder_e3f2g")
 modifications/1 = SubResource("SkeletonModification3DStackHolder_76mpp")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ax2h6"]
+no_depth_test = true
+
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_cl1cg"]
 
 [node name="TestLevel" type="Node3D"]
@@ -115,14 +124,14 @@ shadow_enabled = true
 [node name="NavigationRegion3d" type="NavigationRegion3D" parent="Level"]
 navmesh = SubResource("NavigationMesh_k65o3")
 
-[node name="World" type="StaticBody3D" parent="Level/NavigationRegion3d"]
+[node name="Floor" type="MeshInstance3D" parent="Level/NavigationRegion3d"]
+mesh = SubResource("PlaneMesh_241ub")
+
+[node name="World" type="StaticBody3D" parent="Level/NavigationRegion3d/Floor"]
 collision_mask = 6
 
-[node name="CollisionShape3d" type="CollisionShape3D" parent="Level/NavigationRegion3d/World"]
+[node name="CollisionShape3d" type="CollisionShape3D" parent="Level/NavigationRegion3d/Floor/World"]
 shape = SubResource("WorldBoundaryShape3D_7aetu")
-
-[node name="MeshInstance3d" type="MeshInstance3D" parent="Level/NavigationRegion3d"]
-mesh = SubResource("PlaneMesh_241ub")
 
 [node name="Patrol1" type="Path3D" parent="Level/NavigationRegion3d"]
 curve = SubResource("Curve3D_057ig")
@@ -131,11 +140,21 @@ curve = SubResource("Curve3D_057ig")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.68795, 0.398501, -4.74486)
 loop = false
 
+[node name="Box1" type="MeshInstance3D" parent="Level/NavigationRegion3d"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -8.20388)
+mesh = SubResource("BoxMesh_wut8v")
+
+[node name="StaticBody3d" type="StaticBody3D" parent="Level/NavigationRegion3d/Box1"]
+
+[node name="CollisionShape3d" type="CollisionShape3D" parent="Level/NavigationRegion3d/Box1/StaticBody3d"]
+shape = SubResource("BoxShape3D_epw11")
+
 [node name="Player" parent="." instance=ExtResource("1_7d36r")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.54213)
 
 [node name="TestEnemy" parent="." instance=ExtResource("2_16qsl")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -4.96514)
-patrol_path = NodePath("../Level/NavigationRegion3d/Patrol1")
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -5.21787e-07, 0, -5.96855)
 
 [node name="Skeleton3D" parent="TestEnemy/Puppet" index="0"]
 bones/1/position = Vector3(5.78601e-10, 0.779767, -0.0653875)
@@ -176,16 +195,26 @@ bones/61/rotation = Quaternion(0.655287, 0.372995, 0.507009, 0.417631)
 bones/63/rotation = Quaternion(0.00495412, 0.00577785, 0.163837, 0.986458)
 modification_stack = SubResource("SkeletonModificationStack3D_7onqo")
 
+[node name="Body" parent="TestEnemy/Puppet/Skeleton3D" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_ax2h6")
+
 [node name="AnimationTree2" parent="TestEnemy/Puppet" index="3"]
 parameters/playback = SubResource("AnimationNodeStateMachinePlayback_cl1cg")
 
 [node name="BoneAttachment3d" parent="TestEnemy/Puppet" index="4"]
-transform = Transform3D(0.840241, 0.32588, 0.433355, -0.475086, 0.0572886, 0.878073, 0.26132, -0.943674, 0.202957, 0.0492949, 1.37465, -0.486086)
+transform = Transform3D(0.837057, 0.326718, 0.438852, -0.4086, -0.160115, 0.898559, 0.363842, -0.93146, -0.000528276, 0.0517883, 1.29932, -0.561808)
 
-[node name="Pistol" parent="TestEnemy/Puppet/BoneAttachment3d" index="0"]
-is_automatic = false
+[node name="BehaviorMachine" parent="TestEnemy" index="6"]
+initial_state = NodePath("Patrol")
+
+[node name="Patrol" parent="TestEnemy/BehaviorMachine" index="1"]
+path_path = NodePath("../../../Level/NavigationRegion3d/Patrol1")
+follow_path = NodePath("../../../Level/NavigationRegion3d/Patrol1/PathFollow")
+
+[node name="SeekTimer" type="Timer" parent="TestEnemy/BehaviorMachine/Seek" index="0"]
 
 [connection signal="transitioned" from="TestEnemy/BehaviorMachine" to="TestEnemy" method="_state_transitioned"]
+[connection signal="timeout" from="TestEnemy/BehaviorMachine/Seek/SeekTimer" to="TestEnemy/BehaviorMachine/Seek" method="_patrol"]
 
 [editable path="TestEnemy"]
 [editable path="TestEnemy/Puppet"]
